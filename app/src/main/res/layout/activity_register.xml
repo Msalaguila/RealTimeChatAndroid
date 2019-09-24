@@ -17,8 +17,18 @@
         app:layout_constraintBottom_toTopOf="@id/segmentControlLogin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:background="@drawable/rounded_profile_photo_register"
         android:src="@drawable/user_logo"
         />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profilePhotoImageView"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        app:layout_constraintBottom_toBottomOf="@+id/photoImageView"
+        app:layout_constraintEnd_toEndOf="@+id/photoImageView"
+        app:layout_constraintStart_toStartOf="@+id/photoImageView"
+        app:layout_constraintTop_toTopOf="@+id/photoImageView" />
 
     <LinearLayout
         android:layout_width="0dp"

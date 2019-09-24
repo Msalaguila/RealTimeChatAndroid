@@ -25,6 +25,8 @@ interface RegisterContract {
     void routeToLogin(Context activity);
 
     void fetchData();
+
+    void openGallery(Activity activity);
   }
 
   interface Model {
@@ -39,5 +41,7 @@ interface RegisterContract {
     void navigateToLogin(Context activity);
 
     RegisterState getDataFromPreviousScreen();
+
+    void openGallery(Activity activity);
   }
 }

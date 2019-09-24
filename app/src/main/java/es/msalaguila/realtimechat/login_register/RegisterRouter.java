@@ -1,7 +1,9 @@
 package es.msalaguila.realtimechat.login_register;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.Context;
+import android.provider.MediaStore;
 
 import es.msalaguila.realtimechat.app.AppMediator;
 import es.msalaguila.realtimechat.login_login.LoginActivity;
@@ -9,6 +11,8 @@ import es.msalaguila.realtimechat.login_login.LoginActivity;
 public class RegisterRouter implements RegisterContract.Router {
 
   public static String TAG = RegisterRouter.class.getSimpleName();
+
+  private static final int PICK_IMAGE = 100;
 
   private AppMediator mediator;
 
@@ -40,4 +44,13 @@ public class RegisterRouter implements RegisterContract.Router {
     RegisterState state = mediator.getRegisterState();
     return state;
   }
+
+  @Override
+  public void openGallery(Activity activity) {
+    Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+    gallery.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+    activity.startActivityForResult(gallery, PICK_IMAGE);
+  }
+
+
 }

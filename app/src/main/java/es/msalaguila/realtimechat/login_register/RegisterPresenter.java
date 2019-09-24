@@ -1,5 +1,6 @@
 package es.msalaguila.realtimechat.login_register;
 
+import android.app.Activity;
 import android.content.Context;
 
 import java.lang.ref.WeakReference;
@@ -58,6 +59,11 @@ public class RegisterPresenter implements RegisterContract.Presenter {
     // update the view
     view.get().displayData(viewModel);
 
+  }
+
+  @Override
+  public void openGallery(Activity activity) {
+    router.openGallery(activity);
   }
 
 
