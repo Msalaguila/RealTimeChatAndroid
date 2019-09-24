@@ -1,5 +1,7 @@
 package es.msalaguila.realtimechat.login_register;
 
+import android.content.Context;
+
 import java.lang.ref.WeakReference;
 
 public class RegisterPresenter implements RegisterContract.Presenter {
@@ -28,6 +30,11 @@ public class RegisterPresenter implements RegisterContract.Presenter {
   @Override
   public void injectRouter(RegisterContract.Router router) {
     this.router = router;
+  }
+
+  @Override
+  public void routeToLogin(Context activity) {
+    router.navigateToLogin(activity);
   }
 
   @Override

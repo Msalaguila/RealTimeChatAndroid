@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.Context;
 
 import es.msalaguila.realtimechat.app.AppMediator;
+import es.msalaguila.realtimechat.login_login.LoginActivity;
 
 public class RegisterRouter implements RegisterContract.Router {
 
@@ -25,6 +26,13 @@ public class RegisterRouter implements RegisterContract.Router {
   @Override
   public void passDataToNextScreen(RegisterState state) {
     mediator.setRegisterState(state);
+  }
+
+  @Override
+  public void navigateToLogin(Context activity) {
+    Context context = mediator.getApplicationContext();
+    Intent intent = new Intent(context, LoginActivity.class);
+    context.startActivity(intent);
   }
 
   @Override

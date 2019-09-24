@@ -1,16 +1,16 @@
-package es.msalaguila.realtimechat.login_register;
+package es.msalaguila.realtimechat.login_login;
 
 import android.app.Activity;
 import android.content.Context;
 
 import java.lang.ref.WeakReference;
 
-interface RegisterContract {
+interface LoginContract {
 
   interface View {
     void injectPresenter(Presenter presenter);
 
-    void displayData(RegisterViewModel viewModel);
+    void displayData(LoginViewModel viewModel);
 
     Activity getActivity();
   }
@@ -22,9 +22,9 @@ interface RegisterContract {
 
     void injectRouter(Router router);
 
-    void routeToLogin(Context activity);
-
     void fetchData();
+
+    void routeToRegister(Context activity);
   }
 
   interface Model {
@@ -34,10 +34,10 @@ interface RegisterContract {
   interface Router {
     void navigateToNextScreen();
 
-    void passDataToNextScreen(RegisterState state);
+    void passDataToNextScreen(LoginState state);
 
-    void navigateToLogin(Context activity);
+    void routeToRegister(Context activity);
 
-    RegisterState getDataFromPreviousScreen();
+    LoginState getDataFromPreviousScreen();
   }
 }
