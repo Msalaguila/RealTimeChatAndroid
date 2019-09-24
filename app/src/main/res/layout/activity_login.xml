@@ -8,7 +8,20 @@
     tools:context=".login_register.RegisterActivity"
     >
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginBottom="12dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toTopOf="@id/segmentControlLogin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/user_logo" />
+
+
     <LinearLayout
+        android:id="@+id/segmentControlLogin"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginBottom="12dp"
@@ -28,7 +41,7 @@
             android:textSize="11sp"
             android:textAllCaps="false"
             android:textColor="@color/loginBackgroundColor"
-            android:background="@color/whiteColor"/>
+            android:background="@drawable/border_sc_white"/>
 
         <Button
             android:id="@+id/registerButtonSCLogin"
@@ -39,7 +52,7 @@
             android:textSize="11sp"
             android:textAllCaps="false"
             android:textColor="@color/whiteColor"
-            android:background="@color/loginBackgroundColor"/>
+            android:background="@drawable/border_sc"/>
     </LinearLayout>
 
     <LinearLayout
@@ -48,7 +61,7 @@
         android:layout_height="100dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:background="@color/whiteColor"
+        android:background="@drawable/rounded_container_login_register"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
