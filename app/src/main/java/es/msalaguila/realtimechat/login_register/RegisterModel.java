@@ -1,11 +1,4 @@
-package es.msalaguila.realtimechat.login;
-
-import android.util.Log;
-
-import java.lang.ref.WeakReference;
-
-import android.support.v7.app.AppCompatActivity;
-import android.support.v4.app.FragmentActivity;
+package es.msalaguila.realtimechat.login_register;
 
 public class RegisterModel implements RegisterContract.Model {
 

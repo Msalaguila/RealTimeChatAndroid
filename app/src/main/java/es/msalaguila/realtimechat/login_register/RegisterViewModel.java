@@ -1,4 +1,4 @@
-package es.msalaguila.realtimechat.login;
+package es.msalaguila.realtimechat.login_register;
 
 public class RegisterViewModel {
 

@@ -1,6 +1,5 @@
-package es.msalaguila.realtimechat.login;
+package es.msalaguila.realtimechat.login_register;
 
-import android.util.Log;
 import android.content.Intent;
 import android.content.Context;
 

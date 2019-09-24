@@ -1,6 +1,4 @@
-package es.msalaguila.realtimechat.login;
-
-import android.util.Log;
+package es.msalaguila.realtimechat.login_register;
 
 import java.lang.ref.WeakReference;
 

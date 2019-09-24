@@ -1,10 +1,9 @@
-package es.msalaguila.realtimechat.login;
+package es.msalaguila.realtimechat.login_register;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import es.msalaguila.realtimechat.R;
 

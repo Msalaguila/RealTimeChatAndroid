@@ -10,7 +10,7 @@
         android:name=".app.AppMediator"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".login.RegisterActivity">
+        <activity android:name=".login_register.RegisterActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

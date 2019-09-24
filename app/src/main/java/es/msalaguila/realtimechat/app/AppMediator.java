@@ -2,7 +2,7 @@ package es.msalaguila.realtimechat.app;
 
 import android.app.Application;
 
-import es.msalaguila.realtimechat.login.RegisterState;
+import es.msalaguila.realtimechat.login_register.RegisterState;
 
 public class AppMediator extends Application {
 
