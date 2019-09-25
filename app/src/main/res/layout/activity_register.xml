@@ -85,6 +85,7 @@
             android:hint="Name"
             android:inputType="textPersonName"
             android:paddingStart="12dp"
+            android:paddingEnd="12dp"
             android:textAlignment="viewStart" />
 
         <View
@@ -97,6 +98,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:paddingStart="12dp"
+            android:paddingEnd="12dp"
             android:hint="Email"
             android:background="@null"
             android:inputType="textEmailAddress"
@@ -112,6 +114,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:paddingStart="12dp"
+            android:paddingEnd="12dp"
             android:hint="Password"
             android:background="@null"
             android:inputType="textPassword"

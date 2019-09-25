@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1070147249858",
+    "firebase_url": "https://realtimechat-ec017.firebaseio.com",
+    "project_id": "realtimechat-ec017",
+    "storage_bucket": "realtimechat-ec017.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1070147249858:android:552104537c9bd0104cfd5b",
+        "android_client_info": {
+          "package_name": "es.msalaguila.realtimechat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1070147249858-ah0gtuns3tk3dkttu6viucts506vt0ei.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZWPhiH2naJTYg4BGHV1WlPnH-LDE65yM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1070147249858-ah0gtuns3tk3dkttu6viucts506vt0ei.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1070147249858-g9qo3oqaebfvl6im26sshnmaa40hbtj1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "MSalAguila.RealTimeChat"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
