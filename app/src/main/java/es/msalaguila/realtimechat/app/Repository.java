@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import es.msalaguila.realtimechat.Data.LoginUser;
 import es.msalaguila.realtimechat.Data.RegisteredUser;
 
 public class Repository implements RepositoryInterface {
@@ -53,6 +54,18 @@ public class Repository implements RepositoryInterface {
       return;
     } else {
       createNewUser(user, callback);
+    }
+  }
+
+  @Override
+  public void logInUser(LoginUser user, LoginNewUser callback) {
+    mAuth = FirebaseAuth.getInstance();
+
+    String password = user.getPassword();
+
+    if (password.length() < 6) {
+      callback.onUserLoggedIn(false, true);
+      return;
     }
   }
 

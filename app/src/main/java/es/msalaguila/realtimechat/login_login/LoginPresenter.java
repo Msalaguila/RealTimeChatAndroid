@@ -5,6 +5,9 @@ import android.util.Log;
 
 import java.lang.ref.WeakReference;
 
+import es.msalaguila.realtimechat.Data.LoginUser;
+import es.msalaguila.realtimechat.app.RepositoryInterface;
+
 public class LoginPresenter implements LoginContract.Presenter {
 
   public static String TAG = LoginPresenter.class.getSimpleName();
@@ -59,6 +62,18 @@ public class LoginPresenter implements LoginContract.Presenter {
   @Override
   public void routeToRegister(Context activity) {
     router.routeToRegister(activity);
+  }
+
+  @Override
+  public void onLoginButtonPressed(LoginUser user) {
+    model.loginUser(user, new RepositoryInterface.LoginNewUser() {
+      @Override
+      public void onUserLoggedIn(boolean error, boolean shortPassword) {
+        if (shortPassword) {
+          view.get().displayPasswordTooShort();
+        }
+      }
+    });
   }
 
 

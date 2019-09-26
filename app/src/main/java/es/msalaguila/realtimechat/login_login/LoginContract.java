@@ -5,6 +5,9 @@ import android.content.Context;
 
 import java.lang.ref.WeakReference;
 
+import es.msalaguila.realtimechat.Data.LoginUser;
+import es.msalaguila.realtimechat.app.RepositoryInterface;
+
 interface LoginContract {
 
   interface View {
@@ -13,6 +16,8 @@ interface LoginContract {
     void displayData(LoginViewModel viewModel);
 
     Activity getActivity();
+
+    void displayPasswordTooShort();
   }
 
   interface Presenter {
@@ -25,10 +30,14 @@ interface LoginContract {
     void fetchData();
 
     void routeToRegister(Context activity);
+
+    void onLoginButtonPressed(LoginUser user);
   }
 
   interface Model {
     String fetchData();
+
+    void loginUser(LoginUser user, RepositoryInterface.LoginNewUser callback);
   }
 
   interface Router {
