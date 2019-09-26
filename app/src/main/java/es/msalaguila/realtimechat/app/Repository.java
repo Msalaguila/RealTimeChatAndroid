@@ -1,7 +1,11 @@
 package es.msalaguila.realtimechat.app;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 import es.msalaguila.realtimechat.Data.LoginUser;
@@ -58,14 +62,32 @@ public class Repository implements RepositoryInterface {
   }
 
   @Override
-  public void logInUser(LoginUser user, LoginNewUser callback) {
+  public void logInUser(LoginUser user, final LoginNewUser callback) {
     mAuth = FirebaseAuth.getInstance();
 
+    String email = user.getEmail();
     String password = user.getPassword();
 
+    // Firstly we check whether the password is too short or not
     if (password.length() < 6) {
       callback.onUserLoggedIn(false, true);
       return;
+    } else {
+      mAuth.signInWithEmailAndPassword(email, password)
+              .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                  if (task.isSuccessful()) {
+                    // Sign in succesful
+                    callback.onUserLoggedIn(false, false);
+                    return;
+                  } else {
+                    // Sign in failed
+                    callback.onUserLoggedIn(true, false);
+                    return;
+                  }
+                }
+              });
     }
   }
 

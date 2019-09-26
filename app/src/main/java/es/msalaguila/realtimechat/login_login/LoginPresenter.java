@@ -71,6 +71,8 @@ public class LoginPresenter implements LoginContract.Presenter {
       public void onUserLoggedIn(boolean error, boolean shortPassword) {
         if (shortPassword) {
           view.get().displayPasswordTooShort();
+        } else if (error) {
+          view.get().displayLoginErrorAlert();
         }
       }
     });

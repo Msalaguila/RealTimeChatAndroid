@@ -105,4 +105,25 @@ public class LoginActivity
     alert11.show();
 
   }
+
+  @Override
+  public void displayLoginErrorAlert() {
+
+    AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+    builder1.setTitle("Check your credentials");
+    builder1.setMessage("Are you sure you have an account? Check your credentials again.");
+    builder1.setCancelable(true);
+
+    builder1.setNegativeButton(
+            "Dismiss",
+            new DialogInterface.OnClickListener() {
+              public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+              }
+            });
+
+    AlertDialog alert11 = builder1.create();
+    alert11.show();
+
+  }
 }

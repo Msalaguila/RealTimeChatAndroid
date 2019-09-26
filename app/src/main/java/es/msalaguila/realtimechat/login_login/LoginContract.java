@@ -18,6 +18,8 @@ interface LoginContract {
     Activity getActivity();
 
     void displayPasswordTooShort();
+
+    void displayLoginErrorAlert();
   }
 
   interface Presenter {
