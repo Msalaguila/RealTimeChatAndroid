@@ -1,6 +1,8 @@
 package es.msalaguila.realtimechat.login_register;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -13,11 +15,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.io.IOException;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import es.msalaguila.realtimechat.Data.RegisteredUser;
 import es.msalaguila.realtimechat.R;
+import es.msalaguila.realtimechat.app.RepositoryInterface;
 
 public class RegisterActivity
         extends AppCompatActivity implements RegisterContract.View {
@@ -34,6 +39,7 @@ public class RegisterActivity
   private Button loginButtonSC;
   private ImageView photoImageView;
   private CircleImageView profilePhotoImageView;
+  private Button registerButton;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +52,7 @@ public class RegisterActivity
     loginButtonSC = findViewById(R.id.loginButtonSCRegister);
     photoImageView = findViewById(R.id.photoImageView);
     profilePhotoImageView = findViewById(R.id.profilePhotoImageView);
-
-    Log.d("RegisterActivity", "Name: " + nameEditText.getText().toString());
+    registerButton = findViewById(R.id.registerButton);
 
     // do the setup
     RegisterScreen.configure(this);
@@ -58,6 +63,19 @@ public class RegisterActivity
         Log.d("RegisterActivity", "Login Button SC Clicked");
         presenter.routeToLogin(getActivity());
         finish();
+      }
+    });
+
+    registerButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        Log.d("RegisterActivity", "Register Button pressed");
+        String name = nameEditText.getText().toString();
+        String email = emailEditText.getText().toString();
+        String password = passwordEditText.getText().toString();
+
+        RegisteredUser user = new RegisteredUser(name, email, password, profilePhotoImageView);
+        presenter.onRegisterButtonPressed(user);
       }
     });
 
@@ -94,6 +112,28 @@ public class RegisterActivity
     return this;
   }
 
+  @Override
+  public void displayPasswordTooShort() {
+
+    AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+    builder1.setTitle("Password too short");
+    builder1.setMessage("The password needs to have at least 6 characters");
+    builder1.setCancelable(true);
+
+    builder1.setNegativeButton(
+            "Dismiss",
+            new DialogInterface.OnClickListener() {
+              public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+              }
+            });
+
+    AlertDialog alert11 = builder1.create();
+    alert11.show();
+
+    // Toast.makeText(this, "Password too short", Toast.LENGTH_SHORT).show();
+  }
+
 
   /**
    * Deals with Gallery once the photo has been chosen
@@ -114,7 +154,6 @@ public class RegisterActivity
       } catch (IOException e) {
         e.printStackTrace();
       }
-
       // photoImageView.setImageURI(imageUri);
     }
 

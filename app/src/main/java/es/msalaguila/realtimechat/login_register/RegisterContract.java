@@ -5,6 +5,9 @@ import android.content.Context;
 
 import java.lang.ref.WeakReference;
 
+import es.msalaguila.realtimechat.Data.RegisteredUser;
+import es.msalaguila.realtimechat.app.RepositoryInterface;
+
 interface RegisterContract {
 
   interface View {
@@ -13,6 +16,8 @@ interface RegisterContract {
     void displayData(RegisterViewModel viewModel);
 
     Activity getActivity();
+
+    void displayPasswordTooShort();
   }
 
   interface Presenter {
@@ -27,10 +32,14 @@ interface RegisterContract {
     void fetchData();
 
     void openGallery(Activity activity);
+
+    void onRegisterButtonPressed(RegisteredUser user);
   }
 
   interface Model {
     String fetchData();
+
+    void registerNewUser(RegisteredUser user, RepositoryInterface.RegisterNewUser callback);
   }
 
   interface Router {

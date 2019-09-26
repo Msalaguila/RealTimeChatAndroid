@@ -5,6 +5,9 @@ import android.content.Context;
 
 import java.lang.ref.WeakReference;
 
+import es.msalaguila.realtimechat.Data.RegisteredUser;
+import es.msalaguila.realtimechat.app.RepositoryInterface;
+
 public class RegisterPresenter implements RegisterContract.Presenter {
 
   public static String TAG = RegisterPresenter.class.getSimpleName();
@@ -64,6 +67,18 @@ public class RegisterPresenter implements RegisterContract.Presenter {
   @Override
   public void openGallery(Activity activity) {
     router.openGallery(activity);
+  }
+
+  @Override
+  public void onRegisterButtonPressed(RegisteredUser user) {
+    model.registerNewUser(user, new RepositoryInterface.RegisterNewUser() {
+      @Override
+      public void onNewUserRegistered(boolean error, boolean shortPassword) {
+        if (shortPassword) {
+          view.get().displayPasswordTooShort();
+        }
+      }
+    });
   }
 
 
