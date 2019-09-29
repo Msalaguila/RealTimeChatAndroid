@@ -3,13 +3,16 @@ package es.msalaguila.realtimechat.app;
 import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.UUID;
 
@@ -118,30 +121,51 @@ public class Repository implements RepositoryInterface {
     }
   }
 
-  private void createNewUser(final RegisteredUser user, RegisterNewUser callback) {
+  private void createNewUser(final RegisteredUser user, final RegisterNewUser callback) {
     mAuth = FirebaseAuth.getInstance();
 
     // TODO: Complete method. Register user with email and password. Afterwards, upload image to
-    // storage
+
+    Log.d("Repository", "Entered in Create User Method");
 
     String email = user.getEmail();
     String password = user.getPassword();
 
+    if (mAuth != null){
+      Log.d("Repository", "Firebase no es nulo.");
+    }
     mAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
               @Override
               public void onComplete(@NonNull Task<AuthResult> task) {
-                if (!task.isSuccessful()) {
+                if (task.isSuccessful()) {
                   // If there is any error while creating the user
-
-                } else {
-                  // Creation succesful
-
                   String userUID = mAuth.getCurrentUser().getUid();
                   String imageName = UUID.randomUUID().toString();
+                  Uri imageUri = user.getProfileImageUri();
+
+                  Log.d("Repository", "Image Name" + imageName);
 
                   StorageReference storageRef = FirebaseStorage.getInstance().getReference()
                           .child("profile_images").child(imageName + ".png");
+
+                  storageRef.putFile(imageUri)
+                          .addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                              if (task.isSuccessful()) {
+                                callback.onNewUserRegistered(false, false,
+                                        false, false);
+                              }
+                            }
+                          });
+                } else {
+                  // Creation succesful
+
+                    Log.d("Registration Failed", "" + task.getException().getMessage());
+                    return;
+
+
                 }
               }
             });

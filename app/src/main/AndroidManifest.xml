@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="es.msalaguila.realtimechat">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -23,5 +26,7 @@
         <activity android:name=".login_login.LoginActivity"
             android:screenOrientation="portrait"/>
     </application>
+
+
 
 </manifest>
