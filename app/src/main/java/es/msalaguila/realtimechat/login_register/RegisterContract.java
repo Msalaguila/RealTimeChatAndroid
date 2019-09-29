@@ -18,6 +18,10 @@ interface RegisterContract {
     Activity getActivity();
 
     void displayPasswordTooShort();
+
+    void displayPickUpPhotoImage();
+
+    void displayFillAllFieldsMessage();
   }
 
   interface Presenter {
@@ -27,7 +31,7 @@ interface RegisterContract {
 
     void injectRouter(Router router);
 
-    void routeToLogin(Context activity);
+    void routeToLogin(Activity activity);
 
     void fetchData();
 
@@ -47,7 +51,7 @@ interface RegisterContract {
 
     void passDataToNextScreen(RegisterState state);
 
-    void navigateToLogin(Context activity);
+    void navigateToLogin(Activity activity);
 
     RegisterState getDataFromPreviousScreen();
 

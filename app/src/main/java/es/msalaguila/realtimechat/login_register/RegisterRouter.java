@@ -33,10 +33,10 @@ public class RegisterRouter implements RegisterContract.Router {
   }
 
   @Override
-  public void navigateToLogin(Context activity) {
+  public void navigateToLogin(Activity activity) {
     Context context = mediator.getApplicationContext();
     Intent intent = new Intent(context, LoginActivity.class);
-    context.startActivity(intent);
+    activity.startActivity(intent);
   }
 
   @Override

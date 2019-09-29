@@ -1,5 +1,6 @@
 package es.msalaguila.realtimechat.login_login;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
@@ -60,7 +61,7 @@ public class LoginPresenter implements LoginContract.Presenter {
   }
 
   @Override
-  public void routeToRegister(Context activity) {
+  public void routeToRegister(Activity activity) {
     router.routeToRegister(activity);
   }
 

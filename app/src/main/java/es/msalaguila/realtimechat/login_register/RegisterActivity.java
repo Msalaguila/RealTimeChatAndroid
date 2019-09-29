@@ -7,9 +7,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -70,12 +69,13 @@ public class RegisterActivity
       @Override
       public void onClick(View v) {
         Log.d("RegisterActivity", "Register Button pressed");
-        String name = nameEditText.getText().toString();
-        String email = emailEditText.getText().toString();
-        String password = passwordEditText.getText().toString();
+          String name = nameEditText.getText().toString();
+          String email = emailEditText.getText().toString();
+          String password = passwordEditText.getText().toString();
 
-        RegisteredUser user = new RegisteredUser(name, email, password, profilePhotoImageView);
-        presenter.onRegisterButtonPressed(user);
+
+          RegisteredUser user = new RegisteredUser(name, email, password, profilePhotoImageView, imageUri);
+          presenter.onRegisterButtonPressed(user);
       }
     });
 
@@ -132,6 +132,44 @@ public class RegisterActivity
     alert11.show();
 
     // Toast.makeText(this, "Password too short", Toast.LENGTH_SHORT).show();
+  }
+
+  @Override
+  public void displayPickUpPhotoImage() {
+    AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+    builder1.setTitle("Select a Profile Photo");
+    builder1.setMessage("You must select a photo in order to register.");
+    builder1.setCancelable(true);
+
+    builder1.setNegativeButton(
+            "Dismiss",
+            new DialogInterface.OnClickListener() {
+              public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+              }
+            });
+
+    AlertDialog alert11 = builder1.create();
+    alert11.show();
+  }
+
+  @Override
+  public void displayFillAllFieldsMessage() {
+    AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+    builder1.setTitle("Fill All Fields");
+    builder1.setMessage("All the fields must be filled in order to register.");
+    builder1.setCancelable(true);
+
+    builder1.setNegativeButton(
+            "Dismiss",
+            new DialogInterface.OnClickListener() {
+              public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+              }
+            });
+
+    AlertDialog alert11 = builder1.create();
+    alert11.show();
   }
 
 

@@ -1,8 +1,8 @@
 package es.msalaguila.realtimechat.login_register;
 
-import java.lang.ref.WeakReference;
-
 import android.support.v4.app.FragmentActivity;
+
+import java.lang.ref.WeakReference;
 
 import es.msalaguila.realtimechat.app.AppMediator;
 import es.msalaguila.realtimechat.app.Repository;

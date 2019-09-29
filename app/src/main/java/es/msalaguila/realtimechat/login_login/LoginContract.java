@@ -31,7 +31,7 @@ interface LoginContract {
 
     void fetchData();
 
-    void routeToRegister(Context activity);
+    void routeToRegister(Activity activity);
 
     void onLoginButtonPressed(LoginUser user);
   }
@@ -47,7 +47,7 @@ interface LoginContract {
 
     void passDataToNextScreen(LoginState state);
 
-    void routeToRegister(Context activity);
+    void routeToRegister(Activity activity);
 
     LoginState getDataFromPreviousScreen();
   }

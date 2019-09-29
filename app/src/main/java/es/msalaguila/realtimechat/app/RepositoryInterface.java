@@ -10,7 +10,8 @@ public interface RepositoryInterface {
   }
 
   interface RegisterNewUser {
-    void onNewUserRegistered(boolean error, boolean shortPassword);
+    void onNewUserRegistered(boolean error, boolean shortPassword, boolean isImageUri,
+                             boolean allFieldsFilled);
   }
 
   interface LoginNewUser {

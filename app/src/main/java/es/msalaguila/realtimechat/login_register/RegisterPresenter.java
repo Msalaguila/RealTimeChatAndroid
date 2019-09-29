@@ -37,7 +37,7 @@ public class RegisterPresenter implements RegisterContract.Presenter {
   }
 
   @Override
-  public void routeToLogin(Context activity) {
+  public void routeToLogin(Activity activity) {
     router.navigateToLogin(activity);
   }
 
@@ -73,9 +73,14 @@ public class RegisterPresenter implements RegisterContract.Presenter {
   public void onRegisterButtonPressed(RegisteredUser user) {
     model.registerNewUser(user, new RepositoryInterface.RegisterNewUser() {
       @Override
-      public void onNewUserRegistered(boolean error, boolean shortPassword) {
-        if (shortPassword) {
+      public void onNewUserRegistered(boolean error, boolean shortPassword, boolean isImageUri,
+                                      boolean allFieldsFilled) {
+        if (!allFieldsFilled) {
+          view.get().displayFillAllFieldsMessage();
+        } else if (shortPassword) {
           view.get().displayPasswordTooShort();
+        } else if (!isImageUri) {
+          view.get().displayPickUpPhotoImage();
         }
       }
     });

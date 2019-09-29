@@ -1,12 +1,17 @@
 package es.msalaguila.realtimechat.app;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.util.UUID;
 
 import es.msalaguila.realtimechat.Data.LoginUser;
 import es.msalaguila.realtimechat.Data.RegisteredUser;
@@ -52,9 +57,15 @@ public class Repository implements RepositoryInterface {
 
     // Firstly we check whether the password is too short or not
     String password = user.getPassword();
+    Uri imageUri = user.getProfileImageUri();
 
-    if (password.length() < 6) {
-      callback.onNewUserRegistered(false, true);
+    if (user.getEmail().equals("") || user.getName().equals("")) {
+      callback.onNewUserRegistered(false, true, false, false);
+    } else if (password.length() < 6) {
+      callback.onNewUserRegistered(false, true, false, true);
+      return;
+    } else if (imageUri == null) {
+      callback.onNewUserRegistered(false, false, false, true);
       return;
     } else {
       createNewUser(user, callback);
@@ -91,11 +102,33 @@ public class Repository implements RepositoryInterface {
     }
   }
 
-  private void createNewUser(RegisteredUser user, RegisterNewUser callback) {
+  private void createNewUser(final RegisteredUser user, RegisterNewUser callback) {
     mAuth = FirebaseAuth.getInstance();
 
     // TODO: Complete method. Register user with email and password. Afterwards, upload image to
     // storage
+
+    String email = user.getEmail();
+    String password = user.getPassword();
+
+    mAuth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+              @Override
+              public void onComplete(@NonNull Task<AuthResult> task) {
+                if (!task.isSuccessful()) {
+                  // If there is any error while creating the user
+
+                } else {
+                  // Creation succesful
+
+                  String userUID = mAuth.getCurrentUser().getUid();
+                  String imageName = UUID.randomUUID().toString();
+
+                  StorageReference storageRef = FirebaseStorage.getInstance().getReference()
+                          .child("profile_images").child(imageName + ".png");
+                }
+              }
+            });
 
   }
 

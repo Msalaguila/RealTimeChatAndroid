@@ -11,12 +11,15 @@ public class RegisteredUser {
   private String email;
   private String password;
   private CircleImageView profileImage;
+  private Uri profileImageUri;
 
-  public RegisteredUser(String name, String email, String password, CircleImageView profileImageUri) {
+  public RegisteredUser(String name, String email, String password, CircleImageView profileImage,
+                        Uri profileImageUri) {
     this.name = name;
     this.email = email;
     this.password = password;
-    this.profileImage = profileImageUri;
+    this.profileImage = profileImage;
+    this.profileImageUri = profileImageUri;
   }
 
   public String getName() {
@@ -35,6 +38,10 @@ public class RegisteredUser {
     return profileImage;
   }
 
+  public Uri getProfileImageUri() {
+    return profileImageUri;
+  }
+
   public void setName(String name) {
     this.name = name;
   }
@@ -49,5 +56,9 @@ public class RegisteredUser {
 
   public void setProfileImage(CircleImageView profileImage) {
     this.profileImage = profileImage;
+  }
+
+  public void setProfileImageUri(Uri profileImageUri) {
+    this.profileImageUri = profileImageUri;
   }
 }

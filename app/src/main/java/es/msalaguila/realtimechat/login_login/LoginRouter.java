@@ -1,5 +1,6 @@
 package es.msalaguila.realtimechat.login_login;
 
+import android.app.Activity;
 import android.util.Log;
 import android.content.Intent;
 import android.content.Context;
@@ -30,10 +31,10 @@ public class LoginRouter implements LoginContract.Router {
   }
 
   @Override
-  public void routeToRegister(Context activity) {
+  public void routeToRegister(Activity activity) {
     Context context = mediator.getApplicationContext();
     Intent intent = new Intent(context, RegisterActivity.class);
-    context.startActivity(intent);
+    activity.startActivity(intent);
   }
 
   @Override
