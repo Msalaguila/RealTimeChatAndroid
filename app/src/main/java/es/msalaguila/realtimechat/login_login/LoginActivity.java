@@ -126,4 +126,23 @@ public class LoginActivity
     alert11.show();
 
   }
+
+  @Override
+  public void displayFillEmailAlert() {
+    AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+    builder1.setTitle("Fill Email Field");
+    builder1.setMessage("The email field must be filled in order to log in.");
+    builder1.setCancelable(true);
+
+    builder1.setNegativeButton(
+            "Dismiss",
+            new DialogInterface.OnClickListener() {
+              public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+              }
+            });
+
+    AlertDialog alert11 = builder1.create();
+    alert11.show();
+  }
 }

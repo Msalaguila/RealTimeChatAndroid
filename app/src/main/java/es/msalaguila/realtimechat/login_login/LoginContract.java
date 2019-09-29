@@ -20,6 +20,8 @@ interface LoginContract {
     void displayPasswordTooShort();
 
     void displayLoginErrorAlert();
+
+    void displayFillEmailAlert();
   }
 
   interface Presenter {

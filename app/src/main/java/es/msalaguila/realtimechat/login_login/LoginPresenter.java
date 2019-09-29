@@ -69,12 +69,17 @@ public class LoginPresenter implements LoginContract.Presenter {
   public void onLoginButtonPressed(LoginUser user) {
     model.loginUser(user, new RepositoryInterface.LoginNewUser() {
       @Override
-      public void onUserLoggedIn(boolean error, boolean shortPassword) {
+      public void onUserLoggedIn(boolean error, boolean shortPassword, boolean isEmailFilled) {
+
+        if (!isEmailFilled) {
+          view.get().displayFillEmailAlert();
+        }
 
         // Password too short
-        if (shortPassword) {
+        else if (shortPassword) {
           view.get().displayPasswordTooShort();
         }
+
         // An error happens
         else if (error) {
           view.get().displayLoginErrorAlert();

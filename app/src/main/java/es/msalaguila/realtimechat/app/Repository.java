@@ -44,7 +44,6 @@ public class Repository implements RepositoryInterface {
     if (!mAuth.getCurrentUser().getUid().equals("")) {
       // User is logged in
       callback.onUserIsLoggedIn(true);
-      return;
     } else {
       callback.onUserIsLoggedIn(false);
     }
@@ -53,21 +52,32 @@ public class Repository implements RepositoryInterface {
 
   @Override
   public void registerNewUser(RegisteredUser user, RegisterNewUser callback) {
+
     mAuth = FirebaseAuth.getInstance();
 
-    // Firstly we check whether the password is too short or not
     String password = user.getPassword();
     Uri imageUri = user.getProfileImageUri();
 
+    // 1) We check whether all the fields are filled or not
     if (user.getEmail().equals("") || user.getName().equals("")) {
       callback.onNewUserRegistered(false, true, false, false);
-    } else if (password.length() < 6) {
+    }
+
+    // 2) We check whether the password is too short or not
+
+    else if (password.length() < 6) {
       callback.onNewUserRegistered(false, true, false, true);
-      return;
-    } else if (imageUri == null) {
+    }
+
+    // 3) We check whether an image has been selected
+
+    else if (imageUri == null) {
       callback.onNewUserRegistered(false, false, false, true);
-      return;
-    } else {
+    }
+
+    // 4) If there are no problems, we create the user
+
+    else {
       createNewUser(user, callback);
     }
   }
@@ -79,23 +89,29 @@ public class Repository implements RepositoryInterface {
     String email = user.getEmail();
     String password = user.getPassword();
 
-    // Firstly we check whether the password is too short or not
-    if (password.length() < 6) {
-      callback.onUserLoggedIn(false, true);
-      return;
-    } else {
+    // 1) We check whether the email fill is filled
+    if (email.equals("")) {
+      callback.onUserLoggedIn(false, false, false);
+    }
+
+    // 2) We check whether the password is too short or not
+    else if (password.length() < 6) {
+      callback.onUserLoggedIn(false, true, true);
+    }
+
+    // 3) If there are no problems, we log in the user
+
+    else {
       mAuth.signInWithEmailAndPassword(email, password)
               .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                   if (task.isSuccessful()) {
                     // Sign in succesful
-                    callback.onUserLoggedIn(false, false);
-                    return;
+                    callback.onUserLoggedIn(false, false, true);
                   } else {
                     // Sign in failed
-                    callback.onUserLoggedIn(true, false);
-                    return;
+                    callback.onUserLoggedIn(true, false, true);
                   }
                 }
               });

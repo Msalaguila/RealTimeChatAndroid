@@ -15,7 +15,7 @@ public interface RepositoryInterface {
   }
 
   interface LoginNewUser {
-    void onUserLoggedIn(boolean error, boolean shortPassword);
+    void onUserLoggedIn(boolean error, boolean shortPassword, boolean isEmailFilled);
   }
 
   void isUserLoggedIn(RepositoryInterface.CheckIfUserIsLoggedIn callback);
