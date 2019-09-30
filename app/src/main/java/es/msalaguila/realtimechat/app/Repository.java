@@ -1,23 +1,30 @@
 package es.msalaguila.realtimechat.app;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import es.msalaguila.realtimechat.Data.LoginUser;
 import es.msalaguila.realtimechat.Data.RegisteredUser;
+import es.msalaguila.realtimechat.Data.User;
 
 public class Repository implements RepositoryInterface {
 
@@ -134,42 +141,100 @@ public class Repository implements RepositoryInterface {
     if (mAuth != null){
       Log.d("Repository", "Firebase no es nulo.");
     }
+
+    // User Creation in Auth
+    createUserWithEmailAndPassword(user, callback, email, password);
+
+  }
+
+  private void createUserWithEmailAndPassword(final RegisteredUser user,
+                                              final RegisterNewUser callback, String email,
+                                              String password) {
     mAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
               @Override
               public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                  // If there is any error while creating the user
+                  // Creation succesful
+
                   String userUID = mAuth.getCurrentUser().getUid();
                   String imageName = UUID.randomUUID().toString();
                   Uri imageUri = user.getProfileImageUri();
 
-                  Log.d("Repository", "Image Name" + imageName);
+                  Log.d("Repository", "Image Name: " + imageName);
 
-                  StorageReference storageRef = FirebaseStorage.getInstance().getReference()
-                          .child("profile_images").child(imageName + ".png");
-
-                  storageRef.putFile(imageUri)
-                          .addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                              if (task.isSuccessful()) {
-                                callback.onNewUserRegistered(false, false,
-                                        false, false);
-                              }
-                            }
-                          });
+                  uploadNewUserProfileImage(user, imageName, imageUri, callback);
                 } else {
-                  // Creation succesful
-
+                  // If there is any error while creating the user
                     Log.d("Registration Failed", "" + task.getException().getMessage());
-                    return;
-
-
+                  callback.onNewUserRegistered(true, false,
+                          false, false);
                 }
               }
             });
+  }
 
+  private void uploadNewUserProfileImage(final RegisteredUser user, String imageName, Uri imageUri,
+                                         final RegisterNewUser callback) {
+    final StorageReference storageRef = FirebaseStorage.getInstance().getReference()
+            .child("profile_images").child(imageName + ".png");
+
+    // Storaging their image to Storage
+    storageRef.putFile(imageUri)
+            .addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+              @Override
+              public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+
+                // Image storaging succesful
+
+                if (task.isSuccessful()) {
+
+                  // We get imageURL
+                  storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri userImageUri) {
+                      String userUID = FirebaseAuth.getInstance().getUid();
+
+                      Log.d("Repository", "ImageURL: " + userImageUri.toString());
+
+                      String name = user.getName();
+                      String email = user.getEmail();
+                      String profileImageUrl = userImageUri.toString();
+
+                      Map<String,String> newUser =  new HashMap<String,String>();
+                      newUser.put("name",name);
+                      newUser.put("email", email);
+                      newUser.put("profileImageUrl", profileImageUrl);
+
+                      saveUserToDatabase(userUID, newUser, callback);
+                    }
+                  });
+                }
+                // Failure in uploading profile image to Storage
+                else {
+                  callback.onNewUserRegistered(true, false,
+                          false, false);
+                }
+              }
+            });
+  }
+
+  private void saveUserToDatabase(String userUID, Map<String, String> newUser,
+                                  final RegisterNewUser callback) {
+    FirebaseDatabase.getInstance().getReference().child("users")
+            .child(userUID).setValue(newUser).addOnCompleteListener(
+                    new OnCompleteListener<Void>() {
+      @Override
+      public void onComplete(@NonNull Task<Void> task) {
+        if (task.isSuccessful()) {
+          callback.onNewUserRegistered(false, false,
+                  false, false);
+        } else {
+          callback.onNewUserRegistered(true, false,
+                  false, false);
+        }
+      }
+    });
   }
 
 
