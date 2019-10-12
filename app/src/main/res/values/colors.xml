@@ -7,4 +7,5 @@
     <color name="whiteColor">#FFFFFF</color>
     <color name="grayColor">#955C5C5C</color>
     <color name="registerButtonColor">#5065A5</color>
+    <color name="homeButtonsTextColor">#0A84FF</color>
 </resources>

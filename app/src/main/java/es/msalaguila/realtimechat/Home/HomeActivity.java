@@ -44,7 +44,7 @@ public class HomeActivity
     //Log.e(TAG, "displayData()");
 
     // deal with the data
-    ((TextView) findViewById(R.id.data)).setText(viewModel.data);
+    // ((TextView) findViewById(R.id.data)).setText(viewModel.data);
   }
 
   @Override

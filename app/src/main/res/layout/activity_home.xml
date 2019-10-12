@@ -1,17 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="0dp"
     tools:context=".Home.HomeActivity">
 
-    <TextView
-        android:id="@+id/data"
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/home_app_bar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        tools:text="Hello" />
+        android:layout_height="56dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-</FrameLayout>
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/addHouseToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/whiteColor">
+
+            <include
+                android:id="@+id/homeBar"
+                layout="@layout/home_toolbar"/>
+
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+
+</android.support.constraint.ConstraintLayout>
