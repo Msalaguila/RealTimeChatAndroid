@@ -81,9 +81,19 @@ public class RegisterPresenter implements RegisterContract.Presenter {
           view.get().displayPasswordTooShort();
         } else if (!isImageUri) {
           view.get().displayPickUpPhotoImage();
+        } else if (error){
+          view.get().displayError();
+        } else {
+          view.get().displayRegisteredSuccesful();
         }
       }
     });
+  }
+
+  @Override
+  public void routeToHome() {
+    Activity activity = view.get().getActivity();
+    router.routeToHome(activity);
   }
 
 

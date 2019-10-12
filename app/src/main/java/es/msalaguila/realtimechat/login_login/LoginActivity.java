@@ -7,8 +7,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import es.msalaguila.realtimechat.Data.LoginUser;
@@ -25,6 +28,7 @@ public class LoginActivity
   private Button loginButton;
   private EditText userEmail;
   private EditText userPassword;
+  private ProgressBar progressBarLogin;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -42,13 +46,17 @@ public class LoginActivity
 
     userEmail = findViewById(R.id.emailEditTextLogin);
     userPassword = findViewById(R.id.passwordEditTextLogin);
+    progressBarLogin = findViewById(R.id.progressbar_login);
 
     loginButton = findViewById(R.id.loginButton);
+
     loginButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         String email = userEmail.getText().toString();
         String password = userPassword.getText().toString();
+
+        startProgressBar();
 
         LoginUser user = new LoginUser(email, password);
         presenter.onLoginButtonPressed(user);
@@ -57,6 +65,16 @@ public class LoginActivity
 
     // do the setup
     LoginScreen.configure(this);
+  }
+
+  private void startProgressBar() {
+    progressBarLogin.setVisibility(View.VISIBLE);
+    progressBarLogin.setEnabled(true);
+  }
+
+  private void stopProgressBar() {
+    progressBarLogin.setVisibility(View.INVISIBLE);
+    progressBarLogin.setEnabled(false);
   }
 
   @Override
@@ -88,6 +106,8 @@ public class LoginActivity
   @Override
   public void displayPasswordTooShort() {
 
+    stopProgressBar();
+
     AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
     builder1.setTitle("Password too short");
     builder1.setMessage("The password needs to have at least 6 characters");
@@ -109,6 +129,8 @@ public class LoginActivity
   @Override
   public void displayLoginErrorAlert() {
 
+    stopProgressBar();
+
     AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
     builder1.setTitle("Check your credentials");
     builder1.setMessage("Are you sure you have an account? Check your credentials again.");
@@ -129,6 +151,9 @@ public class LoginActivity
 
   @Override
   public void displayFillEmailAlert() {
+
+    stopProgressBar();
+
     AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
     builder1.setTitle("Fill Email Field");
     builder1.setMessage("The email field must be filled in order to log in.");

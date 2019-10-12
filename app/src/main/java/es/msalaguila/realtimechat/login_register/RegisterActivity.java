@@ -172,6 +172,44 @@ public class RegisterActivity
     alert11.show();
   }
 
+  @Override
+  public void displayRegisteredSuccesful() {
+    AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+    builder1.setTitle("Registration Succesful");
+    builder1.setMessage("You have been registered succesfully");
+    builder1.setCancelable(true);
+
+    builder1.setNegativeButton(
+            "Dismiss",
+            new DialogInterface.OnClickListener() {
+              public void onClick(DialogInterface dialog, int id) {
+                presenter.routeToHome();
+                dialog.cancel();
+                finish();
+              }
+            });
+    AlertDialog alert11 = builder1.create();
+    alert11.show();
+  }
+
+  @Override
+  public void displayError() {
+    AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+    builder1.setTitle("Registration Failed");
+    builder1.setMessage("An error has occured");
+    builder1.setCancelable(true);
+
+    builder1.setNegativeButton(
+            "Dismiss",
+            new DialogInterface.OnClickListener() {
+              public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+              }
+            });
+    AlertDialog alert11 = builder1.create();
+    alert11.show();
+  }
+
 
   /**
    * Deals with Gallery once the photo has been chosen

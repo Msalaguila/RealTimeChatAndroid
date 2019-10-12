@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.Context;
 import android.provider.MediaStore;
 
+import es.msalaguila.realtimechat.Home.HomeActivity;
 import es.msalaguila.realtimechat.app.AppMediator;
 import es.msalaguila.realtimechat.login_login.LoginActivity;
 
@@ -50,6 +51,13 @@ public class RegisterRouter implements RegisterContract.Router {
     Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
     gallery.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
     activity.startActivityForResult(gallery, PICK_IMAGE);
+  }
+
+  @Override
+  public void routeToHome(Activity activity) {
+    Context context = mediator.getApplicationContext();
+    Intent intent = new Intent(context, HomeActivity.class);
+    activity.startActivity(intent);
   }
 
 

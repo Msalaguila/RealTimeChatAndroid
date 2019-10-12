@@ -57,7 +57,6 @@ public class Repository implements RepositoryInterface {
     } else {
       callback.onUserIsLoggedIn(false);
     }
-
   }
 
   @Override
@@ -69,8 +68,8 @@ public class Repository implements RepositoryInterface {
     Uri imageUri = user.getProfileImageUri();
 
     // 1) We check whether all the fields are filled or not
-    if (user.getEmail().equals("") || user.getName().equals("")) {
-      callback.onNewUserRegistered(false, true, false, false);
+    if (user.getEmail().equals("") || user.getName().equals("") || password.length() == 0) {
+      callback.onNewUserRegistered(false, false, false, false);
     }
 
     // 2) We check whether the password is too short or not
@@ -168,7 +167,7 @@ public class Repository implements RepositoryInterface {
                   // If there is any error while creating the user
                     Log.d("Registration Failed", "" + task.getException().getMessage());
                   callback.onNewUserRegistered(true, false,
-                          false, false);
+                          false, true);
                 }
               }
             });
@@ -213,7 +212,7 @@ public class Repository implements RepositoryInterface {
                 // Failure in uploading profile image to Storage
                 else {
                   callback.onNewUserRegistered(true, false,
-                          false, false);
+                          false, true);
                 }
               }
             });
@@ -228,10 +227,10 @@ public class Repository implements RepositoryInterface {
       public void onComplete(@NonNull Task<Void> task) {
         if (task.isSuccessful()) {
           callback.onNewUserRegistered(false, false,
-                  false, false);
+                  true, true);
         } else {
           callback.onNewUserRegistered(true, false,
-                  false, false);
+                  true, true);
         }
       }
     });

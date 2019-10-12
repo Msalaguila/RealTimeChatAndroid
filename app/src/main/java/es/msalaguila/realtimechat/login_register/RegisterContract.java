@@ -22,6 +22,10 @@ interface RegisterContract {
     void displayPickUpPhotoImage();
 
     void displayFillAllFieldsMessage();
+
+    void displayRegisteredSuccesful();
+
+    void displayError();
   }
 
   interface Presenter {
@@ -38,6 +42,8 @@ interface RegisterContract {
     void openGallery(Activity activity);
 
     void onRegisterButtonPressed(RegisteredUser user);
+
+    void routeToHome();
   }
 
   interface Model {
@@ -56,5 +62,7 @@ interface RegisterContract {
     RegisterState getDataFromPreviousScreen();
 
     void openGallery(Activity activity);
+
+    void routeToHome(Activity activity);
   }
 }
