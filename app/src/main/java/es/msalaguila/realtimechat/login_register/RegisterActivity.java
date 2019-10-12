@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -39,6 +40,7 @@ public class RegisterActivity
   private ImageView photoImageView;
   private CircleImageView profilePhotoImageView;
   private Button registerButton;
+  private ProgressBar progressBarRegister;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,7 @@ public class RegisterActivity
     photoImageView = findViewById(R.id.photoImageView);
     profilePhotoImageView = findViewById(R.id.profilePhotoImageView);
     registerButton = findViewById(R.id.registerButton);
+    progressBarRegister = findViewById(R.id.progressbar_register);
 
     // do the setup
     RegisterScreen.configure(this);
@@ -73,6 +76,7 @@ public class RegisterActivity
           String email = emailEditText.getText().toString();
           String password = passwordEditText.getText().toString();
 
+          startProgressBar();
 
           RegisteredUser user = new RegisteredUser(name, email, password, profilePhotoImageView, imageUri);
           presenter.onRegisterButtonPressed(user);
@@ -107,6 +111,16 @@ public class RegisterActivity
     // deal with the data
   }
 
+  private void startProgressBar() {
+    progressBarRegister.setVisibility(View.VISIBLE);
+    progressBarRegister.setEnabled(true);
+  }
+
+  private void stopProgressBar() {
+    progressBarRegister.setVisibility(View.INVISIBLE);
+    progressBarRegister.setEnabled(false);
+  }
+
   @Override
   public Activity getActivity() {
     return this;
@@ -114,6 +128,8 @@ public class RegisterActivity
 
   @Override
   public void displayPasswordTooShort() {
+
+    stopProgressBar();
 
     AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
     builder1.setTitle("Password too short");
@@ -136,6 +152,9 @@ public class RegisterActivity
 
   @Override
   public void displayPickUpPhotoImage() {
+
+    stopProgressBar();
+
     AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
     builder1.setTitle("Select a Profile Photo");
     builder1.setMessage("You must select a photo in order to register.");
@@ -155,6 +174,9 @@ public class RegisterActivity
 
   @Override
   public void displayFillAllFieldsMessage() {
+
+    stopProgressBar();
+
     AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
     builder1.setTitle("Fill All Fields");
     builder1.setMessage("All the fields must be filled in order to register.");
@@ -174,6 +196,9 @@ public class RegisterActivity
 
   @Override
   public void displayRegisteredSuccesful() {
+
+    stopProgressBar();
+
     AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
     builder1.setTitle("Registration Succesful");
     builder1.setMessage("You have been registered succesfully");
@@ -194,6 +219,9 @@ public class RegisterActivity
 
   @Override
   public void displayError() {
+
+    stopProgressBar();
+
     AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
     builder1.setTitle("Registration Failed");
     builder1.setMessage("An error has occured");
