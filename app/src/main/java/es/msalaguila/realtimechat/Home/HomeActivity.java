@@ -96,6 +96,7 @@ public class HomeActivity
     String profileImageURL = viewModel.registeredUser.getProfileImageUrl();
 
     profileNameHome.setText(userName);
+
     loadImageFromURL(profilePhotoImageView, profileImageURL);
   }
 
