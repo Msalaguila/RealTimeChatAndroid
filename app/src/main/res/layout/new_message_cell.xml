@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profilePhotoImageViewNewMessage"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:src="@drawable/user_logo"
+        android:layout_marginStart="12dp"/>
+    
+    <TextView
+        android:id="@+id/nameTextViewNewMessage"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        app:layout_constraintTop_toTopOf="@+id/profilePhotoImageViewNewMessage"
+        app:layout_constraintStart_toEndOf="@id/profilePhotoImageViewNewMessage"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:text="Nombre de usuario "
+        />
+
+    <TextView
+        android:id="@+id/emailTextViewNewMessage"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        app:layout_constraintTop_toBottomOf="@+id/nameTextViewNewMessage"
+        app:layout_constraintStart_toStartOf="@id/nameTextViewNewMessage"
+        app:layout_constraintEnd_toEndOf="@id/nameTextViewNewMessage"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="14sp"
+        android:text="Email del usuario"
+        />
+    
+    <View
+        android:id="@+id/separatorLineNewMessage"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@color/grayColor"/>
+
+</android.support.constraint.ConstraintLayout>
