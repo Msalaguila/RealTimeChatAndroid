@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -13,14 +14,17 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -39,6 +43,8 @@ public class Repository implements RepositoryInterface {
 
   private Context context;
 
+  // Array to retrieve users from the FirebaseDatabase
+  private ArrayList<RegisteredUser> currentUsers = new ArrayList<>();
 
   public static RepositoryInterface getInstance(Context context) {
     if (INSTANCE == null) {
@@ -144,27 +150,73 @@ public class Repository implements RepositoryInterface {
     final String uid = mAuth.getCurrentUser().getUid();
     FirebaseDatabase.getInstance().getReference().child("users").child(uid)
             .addValueEventListener(new ValueEventListener() {
+              @Override
+              public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String snapshot = dataSnapshot.toString();
+                Log.d("Repository", snapshot);
+
+                HashMap<String, Object> dictionary = (HashMap<String, Object>) dataSnapshot.getValue();
+                String name = (String) dictionary.get("name");
+                String email = (String) dictionary.get("email");
+                String profileImageUrl = (String) dictionary.get("profileImageUrl");
+
+                RegisteredUser user = new RegisteredUser(name, email, profileImageUrl, uid);
+                callback.onGetCurrentUser(user);
+              }
+
+              @Override
+              public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("Repository", "Error getting Current User " + databaseError.toString());
+              }
+            });
+  }
+
+  @Override
+  public void getCurrentUsers(final GetCurrentUsers callback) {
+
+    currentUsers = new ArrayList<>();
+
+    DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("users");
+    ref.addChildEventListener(new ChildEventListener() {
       @Override
-      public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-        String snapshot = dataSnapshot.toString();
-        Log.d("Repository", snapshot);
+      public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+        Log.d("Repository", dataSnapshot.toString());
 
-        HashMap<String, Object> dictionary = (HashMap<String, Object>) dataSnapshot.getValue();
-        String name = (String) dictionary.get("name");
-        String email = (String) dictionary.get("email");
-        String profileImageUrl = (String) dictionary.get("profileImageUrl");
+        String uid = dataSnapshot.getKey();
 
-        Log.d("Repository", name);
-        Log.d("Repository", email);
-        Log.d("Repository", profileImageUrl);
+        String currentUserUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        RegisteredUser user = new RegisteredUser(name, email, profileImageUrl, uid);
-        callback.onGetCurrentUser(user);
+        if (!currentUserUID.equals(uid)) {
+          HashMap<String, Object> dictionary = (HashMap<String, Object>) dataSnapshot.getValue();
+          String name = (String) dictionary.get("name");
+          String email = (String) dictionary.get("email");
+          String profileImageUrl = (String) dictionary.get("profileImageUrl");
+
+          RegisteredUser user = new RegisteredUser(name, email, profileImageUrl, uid);
+          currentUsers.add(user);
+
+          callback.onGetCurrentUsers(currentUsers);
+        }
+      }
+
+      @Override
+      public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+      }
+
+      @Override
+      public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+      }
+
+      @Override
+      public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
       }
 
       @Override
       public void onCancelled(@NonNull DatabaseError databaseError) {
-        Log.d("Repository", "Error getting Current User " + databaseError.toString());
+
       }
     });
   }
@@ -179,7 +231,7 @@ public class Repository implements RepositoryInterface {
     String email = user.getEmail();
     String password = user.getPassword();
 
-    if (mAuth != null){
+    if (mAuth != null) {
       Log.d("Repository", "Firebase no es nulo.");
     }
 
@@ -207,7 +259,7 @@ public class Repository implements RepositoryInterface {
                   uploadNewUserProfileImage(user, imageName, imageUri, callback);
                 } else {
                   // If there is any error while creating the user
-                    Log.d("Registration Failed", "" + task.getException().getMessage());
+                  Log.d("Registration Failed", "" + task.getException().getMessage());
                   callback.onNewUserRegistered(true, false,
                           false, true);
                 }
@@ -242,8 +294,8 @@ public class Repository implements RepositoryInterface {
                       String email = user.getEmail();
                       String profileImageUrl = userImageUri.toString();
 
-                      Map<String,String> newUser =  new HashMap<String,String>();
-                      newUser.put("name",name);
+                      Map<String, String> newUser = new HashMap<String, String>();
+                      newUser.put("name", name);
                       newUser.put("email", email);
                       newUser.put("profileImageUrl", profileImageUrl);
 
@@ -264,18 +316,18 @@ public class Repository implements RepositoryInterface {
                                   final RegisterNewUser callback) {
     FirebaseDatabase.getInstance().getReference().child("users")
             .child(userUID).setValue(newUser).addOnCompleteListener(
-                    new OnCompleteListener<Void>() {
-      @Override
-      public void onComplete(@NonNull Task<Void> task) {
-        if (task.isSuccessful()) {
-          callback.onNewUserRegistered(false, false,
-                  true, true);
-        } else {
-          callback.onNewUserRegistered(true, false,
-                  true, true);
-        }
-      }
-    });
+            new OnCompleteListener<Void>() {
+              @Override
+              public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                  callback.onNewUserRegistered(false, false,
+                          true, true);
+                } else {
+                  callback.onNewUserRegistered(true, false,
+                          true, true);
+                }
+              }
+            });
   }
 
 

@@ -24,4 +24,9 @@ public class NewMessageModel implements NewMessageContract.Model {
     // Log.e(TAG, "fetchData()");
     return "Hello";
   }
+
+  @Override
+  public void getCurrentUsers(RepositoryInterface.GetCurrentUsers callback) {
+    repository.getCurrentUsers(callback);
+  }
 }

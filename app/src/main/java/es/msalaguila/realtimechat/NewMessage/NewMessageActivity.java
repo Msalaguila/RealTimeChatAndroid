@@ -33,13 +33,13 @@ public class NewMessageActivity
     backButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        presenter.onBacbButtonPressed();
+        presenter.onBackButtonPressed();
       }
     });
 
     newMessageAdapter = new NewMessageAdapter(new View.OnClickListener() {
       @Override
-      public void onClick(View v) {
+      public void onClick(View view) {
 
       }
     });
@@ -54,6 +54,7 @@ public class NewMessageActivity
 
     // do some work
     presenter.fetchData();
+    presenter.getCurrentUsers();
   }
 
   @Override
@@ -77,5 +78,15 @@ public class NewMessageActivity
   @Override
   public void finishActivity() {
     finish();
+  }
+
+  @Override
+  public void displayCurrentUsers(final NewMessageViewModel viewModel) {
+    runOnUiThread(new Runnable() {
+      @Override
+      public void run() {
+        newMessageAdapter.setItems(viewModel.currentUsers);
+      }
+    });
   }
 }

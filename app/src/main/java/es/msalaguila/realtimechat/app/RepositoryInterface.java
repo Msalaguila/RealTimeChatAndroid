@@ -1,5 +1,8 @@
 package es.msalaguila.realtimechat.app;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import es.msalaguila.realtimechat.Data.LoginUser;
 import es.msalaguila.realtimechat.Data.RegisteredUser;
 
@@ -26,6 +29,10 @@ public interface RepositoryInterface {
     void onGetCurrentUser(RegisteredUser user);
   }
 
+  interface GetCurrentUsers {
+    void onGetCurrentUsers(List<RegisteredUser> currentUsers);
+  }
+
   void isUserLoggedIn(RepositoryInterface.CheckIfUserIsLoggedIn callback);
 
   void registerNewUser(RegisteredUser user, RepositoryInterface.RegisterNewUser callback);
@@ -35,4 +42,6 @@ public interface RepositoryInterface {
   void logoutUser(RepositoryInterface.LogoutButtonPressed callback);
 
   void getCurrentUser(RepositoryInterface.GetCurrentUser callback);
+
+  void getCurrentUsers(RepositoryInterface.GetCurrentUsers callback);
 }

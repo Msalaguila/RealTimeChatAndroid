@@ -4,6 +4,8 @@ import android.app.Activity;
 
 import java.lang.ref.WeakReference;
 
+import es.msalaguila.realtimechat.app.RepositoryInterface;
+
 interface NewMessageContract {
 
   interface View {
@@ -14,6 +16,8 @@ interface NewMessageContract {
     Activity getActivity();
 
     void finishActivity();
+
+    void displayCurrentUsers(NewMessageViewModel viewModel);
   }
 
   interface Presenter {
@@ -25,11 +29,15 @@ interface NewMessageContract {
 
     void fetchData();
 
-    void onBacbButtonPressed();
+    void onBackButtonPressed();
+
+    void getCurrentUsers();
   }
 
   interface Model {
     String fetchData();
+
+    void getCurrentUsers(RepositoryInterface.GetCurrentUsers callback);
   }
 
   interface Router {

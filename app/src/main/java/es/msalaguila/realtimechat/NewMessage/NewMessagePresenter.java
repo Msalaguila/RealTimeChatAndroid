@@ -4,6 +4,10 @@ import android.app.Activity;
 import android.util.Log;
 
 import java.lang.ref.WeakReference;
+import java.util.List;
+
+import es.msalaguila.realtimechat.Data.RegisteredUser;
+import es.msalaguila.realtimechat.app.RepositoryInterface;
 
 public class NewMessagePresenter implements NewMessageContract.Presenter {
 
@@ -57,10 +61,21 @@ public class NewMessagePresenter implements NewMessageContract.Presenter {
   }
 
   @Override
-  public void onBacbButtonPressed() {
+  public void onBackButtonPressed() {
     Activity activity = view.get().getActivity();
     view.get().finishActivity();
     router.routeToHome(activity);
+  }
+
+  @Override
+  public void getCurrentUsers() {
+    model.getCurrentUsers(new RepositoryInterface.GetCurrentUsers() {
+      @Override
+      public void onGetCurrentUsers(List<RegisteredUser> currentUsers) {
+        viewModel.currentUsers = currentUsers;
+        view.get().displayCurrentUsers(viewModel);
+      }
+    });
   }
 
 
