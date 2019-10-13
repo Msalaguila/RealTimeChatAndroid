@@ -86,7 +86,9 @@ public class LoginPresenter implements LoginContract.Presenter {
         }
         // TODO: User logged-in succesfully
         else {
-
+          Activity activity = view.get().getActivity();
+          view.get().finishActivity();
+          router.routeToHome(activity);
         }
       }
     });

@@ -22,6 +22,8 @@ interface LoginContract {
     void displayLoginErrorAlert();
 
     void displayFillEmailAlert();
+
+    void finishActivity();
   }
 
   interface Presenter {
@@ -52,5 +54,7 @@ interface LoginContract {
     void routeToRegister(Activity activity);
 
     LoginState getDataFromPreviousScreen();
+
+    void routeToHome(Activity activity);
   }
 }

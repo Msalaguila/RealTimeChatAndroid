@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import es.msalaguila.realtimechat.R;
@@ -14,6 +16,8 @@ public class HomeActivity
   public static String TAG = HomeActivity.class.getSimpleName();
 
   private HomeContract.Presenter presenter;
+  private Button logoutButton;
+  private Button newMessageButton;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +26,24 @@ public class HomeActivity
 
     // do the setup
     HomeScreen.configure(this);
+
+    logoutButton = findViewById(R.id.logoutButton);
+    newMessageButton = findViewById(R.id.newMessageButton);
+
+
+    logoutButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        presenter.logoutButtonPressed();
+      }
+    });
+
+    newMessageButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        presenter.newMessageButtonPressed();
+      }
+    });
   }
 
   @Override
@@ -50,5 +72,10 @@ public class HomeActivity
   @Override
   public Activity getActivity() {
     return this;
+  }
+
+  @Override
+  public void finishActivity() {
+    finish();
   }
 }

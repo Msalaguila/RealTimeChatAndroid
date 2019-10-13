@@ -15,6 +15,8 @@ interface HomeContract {
     void displayData(HomeViewModel viewModel);
 
     Activity getActivity();
+
+    void finishActivity();
   }
 
   interface Presenter {
@@ -27,12 +29,18 @@ interface HomeContract {
     void fetchData();
 
     void isUserLoggedIn();
+
+    void logoutButtonPressed();
+
+    void newMessageButtonPressed();
   }
 
   interface Model {
     String fetchData();
 
     void isUserLoggedIn(RepositoryInterface.CheckIfUserIsLoggedIn callback);
+
+    void logoutUser(RepositoryInterface.LogoutButtonPressed callback);
   }
 
   interface Router {
@@ -43,5 +51,7 @@ interface HomeContract {
     HomeState getDataFromPreviousScreen();
 
     void routeToRegister(Activity activity);
+
+    void routeToNewMessage(Activity activity);
   }
 }

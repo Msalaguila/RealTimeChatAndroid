@@ -170,4 +170,9 @@ public class LoginActivity
     AlertDialog alert11 = builder1.create();
     alert11.show();
   }
+
+  @Override
+  public void finishActivity() {
+    finish();
+  }
 }

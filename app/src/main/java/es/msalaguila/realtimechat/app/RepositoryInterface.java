@@ -18,9 +18,15 @@ public interface RepositoryInterface {
     void onUserLoggedIn(boolean error, boolean shortPassword, boolean isEmailFilled);
   }
 
+  interface LogoutButtonPressed {
+    void onLogoutButtonPressed();
+  }
+
   void isUserLoggedIn(RepositoryInterface.CheckIfUserIsLoggedIn callback);
 
   void registerNewUser(RegisteredUser user, RepositoryInterface.RegisterNewUser callback);
 
   void logInUser(LoginUser user, RepositoryInterface.LoginNewUser callback);
+
+  void logoutUser(RepositoryInterface.LogoutButtonPressed callback);
 }

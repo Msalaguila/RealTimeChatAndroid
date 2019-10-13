@@ -67,10 +67,29 @@ public class HomePresenter implements HomeContract.Presenter {
           Activity activity = view.get().getActivity();
           router.routeToRegister(activity);
         } else {
-
+          // TODO: Update User Profile (Photo and name)
+          // TODO: Load User Messages
         }
       }
     });
+  }
+
+  @Override
+  public void logoutButtonPressed() {
+    model.logoutUser(new RepositoryInterface.LogoutButtonPressed() {
+      @Override
+      public void onLogoutButtonPressed() {
+        Activity activity = view.get().getActivity();
+        view.get().finishActivity();
+        router.routeToRegister(activity);
+      }
+    });
+  }
+
+  @Override
+  public void newMessageButtonPressed() {
+    Activity activity = view.get().getActivity();
+    router.routeToNewMessage(activity);
   }
 
 

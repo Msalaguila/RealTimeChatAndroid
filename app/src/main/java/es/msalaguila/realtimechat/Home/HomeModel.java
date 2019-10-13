@@ -29,4 +29,9 @@ public class HomeModel implements HomeContract.Model {
   public void isUserLoggedIn(final RepositoryInterface.CheckIfUserIsLoggedIn callback) {
     repository.isUserLoggedIn(callback);
   }
+
+  @Override
+  public void logoutUser(RepositoryInterface.LogoutButtonPressed callback) {
+    repository.logoutUser(callback);
+  }
 }

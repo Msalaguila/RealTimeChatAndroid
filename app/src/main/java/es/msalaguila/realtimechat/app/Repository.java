@@ -127,6 +127,15 @@ public class Repository implements RepositoryInterface {
     }
   }
 
+  @Override
+  public void logoutUser(LogoutButtonPressed callback) {
+    mAuth = FirebaseAuth.getInstance();
+
+    mAuth.signOut();
+
+    callback.onLogoutButtonPressed();
+  }
+
   private void createNewUser(final RegisteredUser user, final RegisterNewUser callback) {
     mAuth = FirebaseAuth.getInstance();
 
