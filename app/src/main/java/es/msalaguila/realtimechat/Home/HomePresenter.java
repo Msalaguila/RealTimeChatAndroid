@@ -67,9 +67,9 @@ public class HomePresenter implements HomeContract.Presenter {
         if (!isLoggedIn) {
           Activity activity = view.get().getActivity();
           router.routeToRegister(activity);
+          Log.d("HomePresenter", "User NOT LOGGED IN");
         } else {
 
-          // TODO: Update User Profile (Photo and name)
           // TODO: Load User Messages
           model.getCurrentUser(new RepositoryInterface.GetCurrentUser() {
             @Override

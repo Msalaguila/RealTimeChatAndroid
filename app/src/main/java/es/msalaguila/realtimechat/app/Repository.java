@@ -60,7 +60,8 @@ public class Repository implements RepositoryInterface {
   @Override
   public void isUserLoggedIn(CheckIfUserIsLoggedIn callback) {
     mAuth = FirebaseAuth.getInstance();
-    if (!mAuth.getCurrentUser().getUid().equals("")) {
+
+    if (mAuth.getCurrentUser() != null) {
       // User is logged in
       callback.onUserIsLoggedIn(true);
     } else {
