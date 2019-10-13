@@ -3,6 +3,7 @@ package es.msalaguila.realtimechat.NewMessage;
 import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -17,6 +18,8 @@ public class NewMessageActivity
 
   private NewMessageContract.Presenter presenter;
   private ImageView backButton;
+  private RecyclerView recyclerView;
+  private NewMessageAdapter newMessageAdapter;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +36,16 @@ public class NewMessageActivity
         presenter.onBacbButtonPressed();
       }
     });
+
+    newMessageAdapter = new NewMessageAdapter(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+
+      }
+    });
+
+    recyclerView = findViewById(R.id.recyclerViewNewMessage);
+    recyclerView.setAdapter(newMessageAdapter);
   }
 
   @Override
