@@ -2,6 +2,7 @@ package es.msalaguila.realtimechat.app;
 
 import android.app.Application;
 
+import es.msalaguila.realtimechat.Chat.ChatState;
 import es.msalaguila.realtimechat.Home.HomeState;
 import es.msalaguila.realtimechat.NewMessage.NewMessageState;
 import es.msalaguila.realtimechat.login_login.LoginState;
@@ -13,6 +14,7 @@ public class AppMediator extends Application {
   private LoginState loginState = new LoginState();
   private HomeState homeState = new HomeState();
   private NewMessageState newMessageState = new NewMessageState();
+  private ChatState chatState = new ChatState();
 
   public void setRegisterState(RegisterState state) {
     this.registerState = state;
@@ -44,5 +46,13 @@ public class AppMediator extends Application {
 
   public NewMessageState getNewMessageState() {
     return newMessageState;
+  }
+
+  public void setChatState(ChatState state) {
+    this.chatState = state;
+  }
+
+  public ChatState getChatState() {
+    return chatState;
   }
 }

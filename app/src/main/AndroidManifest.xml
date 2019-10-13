@@ -34,8 +34,10 @@
         <activity android:name=".NewMessage.NewMessageActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar"/>
+
+        <activity android:name=".Chat.ChatActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar"/>
     </application>
-
-
 
 </manifest>
