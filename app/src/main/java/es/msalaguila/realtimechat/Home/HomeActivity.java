@@ -6,8 +6,16 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
+import com.bumptech.glide.RequestManager;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 import es.msalaguila.realtimechat.R;
 
 public class HomeActivity
@@ -18,6 +26,8 @@ public class HomeActivity
   private HomeContract.Presenter presenter;
   private Button logoutButton;
   private Button newMessageButton;
+  private CircleImageView profilePhotoImageView;
+  private TextView profileNameHome;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +39,8 @@ public class HomeActivity
 
     logoutButton = findViewById(R.id.logoutButton);
     newMessageButton = findViewById(R.id.newMessageButton);
-
+    profilePhotoImageView = findViewById(R.id.profilePhotoImageViewHome);
+    profileNameHome = findViewById(R.id.profileNameHome);
 
     logoutButton.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -78,4 +89,24 @@ public class HomeActivity
   public void finishActivity() {
     finish();
   }
+
+  @Override
+  public void displayCurrentUser(HomeViewModel viewModel) {
+    String userName = viewModel.registeredUser.getName();
+    String profileImageURL = viewModel.registeredUser.getProfileImageUrl();
+
+    profileNameHome.setText(userName);
+    loadImageFromURL(profilePhotoImageView, profileImageURL);
+  }
+
+  private void loadImageFromURL(ImageView imageView, String imageUrl){
+    RequestManager reqManager = Glide.with(imageView.getContext());
+    RequestBuilder reqBuilder = reqManager.load(imageUrl);
+    RequestOptions reqOptions = new RequestOptions();
+    reqOptions.diskCacheStrategy(DiskCacheStrategy.ALL);
+    reqBuilder.apply(reqOptions);
+    reqBuilder.into(imageView);
+  }
+
+
 }

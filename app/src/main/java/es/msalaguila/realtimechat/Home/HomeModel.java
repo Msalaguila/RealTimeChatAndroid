@@ -34,4 +34,9 @@ public class HomeModel implements HomeContract.Model {
   public void logoutUser(RepositoryInterface.LogoutButtonPressed callback) {
     repository.logoutUser(callback);
   }
+
+  @Override
+  public void getCurrentUser(RepositoryInterface.GetCurrentUser callback) {
+    repository.getCurrentUser(callback);
+  }
 }

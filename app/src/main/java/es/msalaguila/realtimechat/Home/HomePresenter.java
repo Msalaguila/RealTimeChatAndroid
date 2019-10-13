@@ -5,6 +5,7 @@ import android.util.Log;
 
 import java.lang.ref.WeakReference;
 
+import es.msalaguila.realtimechat.Data.RegisteredUser;
 import es.msalaguila.realtimechat.app.RepositoryInterface;
 
 public class HomePresenter implements HomeContract.Presenter {
@@ -67,8 +68,16 @@ public class HomePresenter implements HomeContract.Presenter {
           Activity activity = view.get().getActivity();
           router.routeToRegister(activity);
         } else {
+
           // TODO: Update User Profile (Photo and name)
           // TODO: Load User Messages
+          model.getCurrentUser(new RepositoryInterface.GetCurrentUser() {
+            @Override
+            public void onGetCurrentUser(RegisteredUser user) {
+              viewModel.registeredUser = user;
+              view.get().displayCurrentUser(viewModel);
+            }
+          });
         }
       }
     });

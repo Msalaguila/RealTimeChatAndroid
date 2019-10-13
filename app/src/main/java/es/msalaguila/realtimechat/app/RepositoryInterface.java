@@ -22,6 +22,10 @@ public interface RepositoryInterface {
     void onLogoutButtonPressed();
   }
 
+  interface GetCurrentUser {
+    void onGetCurrentUser(RegisteredUser user);
+  }
+
   void isUserLoggedIn(RepositoryInterface.CheckIfUserIsLoggedIn callback);
 
   void registerNewUser(RegisteredUser user, RepositoryInterface.RegisterNewUser callback);
@@ -29,4 +33,6 @@ public interface RepositoryInterface {
   void logInUser(LoginUser user, RepositoryInterface.LoginNewUser callback);
 
   void logoutUser(RepositoryInterface.LogoutButtonPressed callback);
+
+  void getCurrentUser(RepositoryInterface.GetCurrentUser callback);
 }

@@ -12,6 +12,10 @@ public class RegisteredUser {
   private String password;
   private CircleImageView profileImage;
   private Uri profileImageUri;
+  private String profileImageUrl;
+  private String id;
+
+  // Constructor for New User
 
   public RegisteredUser(String name, String email, String password, CircleImageView profileImage,
                         Uri profileImageUri) {
@@ -20,6 +24,24 @@ public class RegisteredUser {
     this.password = password;
     this.profileImage = profileImage;
     this.profileImageUri = profileImageUri;
+  }
+
+
+  // Constructor for User from Firebase Database
+
+  public RegisteredUser(String name, String email, String profileImageUrl, String id) {
+    this.name = name;
+    this.email = email;
+    this.profileImageUrl = profileImageUrl;
+    this.id = id;
+  }
+
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
   }
 
   public String getName() {
@@ -42,6 +64,10 @@ public class RegisteredUser {
     return profileImageUri;
   }
 
+  public String getProfileImageUrl() {
+    return profileImageUrl;
+  }
+
   public void setName(String name) {
     this.name = name;
   }
@@ -60,5 +86,9 @@ public class RegisteredUser {
 
   public void setProfileImageUri(Uri profileImageUri) {
     this.profileImageUri = profileImageUri;
+  }
+
+  public void setProfileImageUrl(String profileImageUrl) {
+    this.profileImageUrl = profileImageUrl;
   }
 }

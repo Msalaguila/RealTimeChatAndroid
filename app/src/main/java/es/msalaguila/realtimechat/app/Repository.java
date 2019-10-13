@@ -13,7 +13,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -134,6 +137,36 @@ public class Repository implements RepositoryInterface {
     mAuth.signOut();
 
     callback.onLogoutButtonPressed();
+  }
+
+  @Override
+  public void getCurrentUser(final GetCurrentUser callback) {
+    final String uid = mAuth.getCurrentUser().getUid();
+    FirebaseDatabase.getInstance().getReference().child("users").child(uid)
+            .addValueEventListener(new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+        String snapshot = dataSnapshot.toString();
+        Log.d("Repository", snapshot);
+
+        HashMap<String, Object> dictionary = (HashMap<String, Object>) dataSnapshot.getValue();
+        String name = (String) dictionary.get("name");
+        String email = (String) dictionary.get("email");
+        String profileImageUrl = (String) dictionary.get("profileImageUrl");
+
+        Log.d("Repository", name);
+        Log.d("Repository", email);
+        Log.d("Repository", profileImageUrl);
+
+        RegisteredUser user = new RegisteredUser(name, email, profileImageUrl, uid);
+        callback.onGetCurrentUser(user);
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError databaseError) {
+        Log.d("Repository", "Error getting Current User " + databaseError.toString());
+      }
+    });
   }
 
   private void createNewUser(final RegisteredUser user, final RegisterNewUser callback) {
