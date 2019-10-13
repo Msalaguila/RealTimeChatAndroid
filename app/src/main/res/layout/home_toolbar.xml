@@ -18,6 +18,41 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+    
+    
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profilePhotoImageViewHome"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginTop="2dp"
+                android:src="@drawable/user_logo"/>
+
+            <TextView
+                android:id="@+id/profileNameHome"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="PruebaPruebadfagdfkasgdfaa"
+                android:layout_marginStart="6dp"
+                android:layout_marginLeft="6dp"
+                android:layout_marginTop="8dp"/>
+
+        </LinearLayout>
+        
+    </LinearLayout>
 
     <Button
         android:id="@+id/newMessageButton"
@@ -29,7 +64,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginEnd="12dp"/>
-
-
-
+    
 </android.support.constraint.ConstraintLayout>
