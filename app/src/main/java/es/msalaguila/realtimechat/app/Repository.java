@@ -58,6 +58,52 @@ public class Repository implements RepositoryInterface {
   }
 
   @Override
+  public void sendMessageToUser(String message, RegisteredUser userMessageSentTo,
+                                final SendMessage callback) {
+    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("messages");
+    final DatabaseReference messageReference = databaseReference.push();
+
+    final String fromUserID = mAuth.getCurrentUser().getUid();
+    final String toUserID = userMessageSentTo.getId();
+    Long timestamp = System.currentTimeMillis()/1000;
+
+    Log.d("Repository", "From user ID " + fromUserID);
+    Log.d("Repository", "To user ID " + toUserID);
+
+    HashMap<String, Object> values = new HashMap<>();
+    values.put("text", message);
+    values.put("fromID", fromUserID);
+    values.put("toID", toUserID);
+    values.put("timestamp", timestamp);
+
+    messageReference.updateChildren(values, new DatabaseReference.CompletionListener() {
+      @Override
+      public void onComplete(@Nullable DatabaseError databaseError,
+                             @NonNull DatabaseReference databaseReference) {
+          if (databaseError != null) {
+            Log.d("Repository", "Error sending message: " + databaseError.toString());
+          }
+
+          String messageID = messageReference.getKey();
+
+        Log.d("Repository", "Message ID " + messageID);
+
+          DatabaseReference fromUserMessagesRef = FirebaseDatabase.getInstance().getReference()
+                  .child("user-messages").child(fromUserID).child(messageID);
+
+        fromUserMessagesRef.setValue(1);
+
+        DatabaseReference toUserMessagesRef = FirebaseDatabase.getInstance().getReference()
+                .child("user-messages").child(toUserID).child(messageID);
+
+        toUserMessagesRef.setValue(1);
+
+        callback.onMessageSent();
+      }
+    });
+  }
+
+  @Override
   public void isUserLoggedIn(CheckIfUserIsLoggedIn callback) {
     mAuth = FirebaseAuth.getInstance();
 

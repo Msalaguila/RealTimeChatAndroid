@@ -2,6 +2,9 @@ package es.msalaguila.realtimechat.Chat;
 
 import java.lang.ref.WeakReference;
 
+import es.msalaguila.realtimechat.Data.RegisteredUser;
+import es.msalaguila.realtimechat.app.RepositoryInterface;
+
 interface ChatContract {
 
   interface View {
@@ -10,6 +13,8 @@ interface ChatContract {
     void displayData(ChatViewModel viewModel);
 
     void displayUserTappedName(ChatViewModel viewModel);
+
+    void cleanInputTextField();
   }
 
   interface Presenter {
@@ -22,10 +27,15 @@ interface ChatContract {
     void fetchData();
 
     void getUserTappedFromPreviousScreen();
+
+    void sendButtonPressed(String textToSend);
   }
 
   interface Model {
     String fetchData();
+
+    void sendMessageToUser(String textToSend, RegisteredUser userToSendMessageTo,
+                           RepositoryInterface.SendMessage callback);
   }
 
   interface Router {

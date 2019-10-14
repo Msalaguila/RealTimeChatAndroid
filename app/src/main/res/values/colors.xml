@@ -11,4 +11,5 @@
     <color name="toChatCellColor">#0089F9</color>
     <color name="fromChatCellColor">#F0F0F0</color>
     <color name="blackColor">#000000</color>
+    <color name="backgroundChatColor">#b2fcff</color>
 </resources>

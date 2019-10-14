@@ -4,6 +4,9 @@ import android.util.Log;
 
 import java.lang.ref.WeakReference;
 
+import es.msalaguila.realtimechat.Data.RegisteredUser;
+import es.msalaguila.realtimechat.app.RepositoryInterface;
+
 public class ChatPresenter implements ChatContract.Presenter {
 
   public static String TAG = ChatPresenter.class.getSimpleName();
@@ -65,6 +68,19 @@ public class ChatPresenter implements ChatContract.Presenter {
 
     // TODO: Now Testing only
     view.get().displayUserTappedName(viewModel);
+  }
+
+  @Override
+  public void sendButtonPressed(String textToSend) {
+    RegisteredUser userToSendMessage = viewModel.userTapped;
+    model.sendMessageToUser(textToSend, userToSendMessage, new RepositoryInterface.SendMessage() {
+      @Override
+      public void onMessageSent() {
+        view.get().cleanInputTextField();
+
+        // TODO: Reload New messages
+      }
+    });
   }
 
 

@@ -7,6 +7,7 @@ import java.lang.ref.WeakReference;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v4.app.FragmentActivity;
 
+import es.msalaguila.realtimechat.Data.RegisteredUser;
 import es.msalaguila.realtimechat.app.RepositoryInterface;
 
 public class ChatModel implements ChatContract.Model {
@@ -23,5 +24,11 @@ public class ChatModel implements ChatContract.Model {
   public String fetchData() {
     // Log.e(TAG, "fetchData()");
     return "Hello";
+  }
+
+  @Override
+  public void sendMessageToUser(String textToSend, RegisteredUser userToSendMessageTo,
+                                RepositoryInterface.SendMessage callback) {
+    repository.sendMessageToUser(textToSend, userToSendMessageTo, callback);
   }
 }

@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import es.msalaguila.realtimechat.NewMessage.NewMessageAdapter;
@@ -19,6 +22,9 @@ public class ChatActivity
   private RecyclerView recyclerView;
   private ChatAdapter chatAdapter;
   private TextView profileNameChat;
+  private ImageView backButtonChat;
+  private EditText inputEditText;
+  private Button sendButton;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -29,11 +35,31 @@ public class ChatActivity
     ChatScreen.configure(this);
 
     profileNameChat = findViewById(R.id.profileNameChat);
+    backButtonChat = findViewById(R.id.backButtonChat);
+    inputEditText = findViewById(R.id.inputTextFieldChat);
+    sendButton = findViewById(R.id.sendButtonChat);
 
     chatAdapter = new ChatAdapter(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
 
+      }
+    });
+
+    backButtonChat.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        // Close the activity when the back icon is pressed
+        finish();
+      }
+    });
+
+    sendButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        if (isInputTextFieldFull()) {
+          presenter.sendButtonPressed(inputEditText.getText().toString());
+        }
       }
     });
 
@@ -66,5 +92,18 @@ public class ChatActivity
   @Override
   public void displayUserTappedName(ChatViewModel viewModel) {
     profileNameChat.setText(viewModel.userTapped.getName());
+  }
+
+  @Override
+  public void cleanInputTextField() {
+    inputEditText.getText().clear();
+  }
+
+  private boolean isInputTextFieldFull() {
+    if (inputEditText.length()!=0) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

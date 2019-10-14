@@ -33,6 +33,13 @@ public interface RepositoryInterface {
     void onGetCurrentUsers(List<RegisteredUser> currentUsers);
   }
 
+  interface SendMessage {
+    void onMessageSent();
+  }
+
+  void sendMessageToUser(String message, RegisteredUser userMessageSentTo,
+                         RepositoryInterface.SendMessage callback);
+
   void isUserLoggedIn(RepositoryInterface.CheckIfUserIsLoggedIn callback);
 
   void registerNewUser(RegisteredUser user, RepositoryInterface.RegisterNewUser callback);
