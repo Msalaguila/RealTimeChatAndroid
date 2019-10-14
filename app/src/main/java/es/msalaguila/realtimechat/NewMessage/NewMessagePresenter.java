@@ -6,6 +6,7 @@ import android.util.Log;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
+import es.msalaguila.realtimechat.Chat.ChatState;
 import es.msalaguila.realtimechat.Data.RegisteredUser;
 import es.msalaguila.realtimechat.app.RepositoryInterface;
 
@@ -76,6 +77,15 @@ public class NewMessagePresenter implements NewMessageContract.Presenter {
         view.get().displayCurrentUsers(viewModel);
       }
     });
+  }
+
+  @Override
+  public void userTapped(Activity activity, RegisteredUser userTapped) {
+    ChatState state = new ChatState();
+    state.tappedUser = userTapped;
+    router.passDataToChat(state);
+    router.routeToChat(activity);
+    view.get().finishActivity();
   }
 
 

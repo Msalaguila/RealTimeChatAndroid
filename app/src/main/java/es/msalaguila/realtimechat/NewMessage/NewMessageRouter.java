@@ -5,6 +5,8 @@ import android.util.Log;
 import android.content.Intent;
 import android.content.Context;
 
+import es.msalaguila.realtimechat.Chat.ChatActivity;
+import es.msalaguila.realtimechat.Chat.ChatState;
 import es.msalaguila.realtimechat.Home.HomeActivity;
 import es.msalaguila.realtimechat.app.AppMediator;
 
@@ -41,5 +43,17 @@ public class NewMessageRouter implements NewMessageContract.Router {
     Context context = mediator.getApplicationContext();
     Intent intent = new Intent(context, HomeActivity.class);
     context.startActivity(intent);
+  }
+
+  @Override
+  public void routeToChat(Activity activity) {
+    Context context = mediator.getApplicationContext();
+    Intent intent = new Intent(context, ChatActivity.class);
+    context.startActivity(intent);
+  }
+
+  @Override
+  public void passDataToChat(ChatState state) {
+    mediator.setChatState(state);
   }
 }

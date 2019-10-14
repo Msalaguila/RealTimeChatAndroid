@@ -4,6 +4,8 @@ import android.app.Activity;
 
 import java.lang.ref.WeakReference;
 
+import es.msalaguila.realtimechat.Chat.ChatState;
+import es.msalaguila.realtimechat.Data.RegisteredUser;
 import es.msalaguila.realtimechat.app.RepositoryInterface;
 
 interface NewMessageContract {
@@ -32,6 +34,8 @@ interface NewMessageContract {
     void onBackButtonPressed();
 
     void getCurrentUsers();
+
+    void userTapped(Activity activity, RegisteredUser userTapped);
   }
 
   interface Model {
@@ -48,5 +52,9 @@ interface NewMessageContract {
     NewMessageState getDataFromPreviousScreen();
 
     void routeToHome(Activity activity);
+
+    void routeToChat(Activity activity);
+
+    void passDataToChat(ChatState state);
   }
 }

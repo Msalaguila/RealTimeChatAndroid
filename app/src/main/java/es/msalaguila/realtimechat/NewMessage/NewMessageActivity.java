@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import es.msalaguila.realtimechat.Data.RegisteredUser;
 import es.msalaguila.realtimechat.R;
 
 public class NewMessageActivity
@@ -40,7 +41,8 @@ public class NewMessageActivity
     newMessageAdapter = new NewMessageAdapter(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-
+        RegisteredUser userTapped = (RegisteredUser) view.getTag();
+        presenter.userTapped(getActivity(), userTapped);
       }
     });
 

@@ -18,6 +18,7 @@ public class ChatActivity
   private ChatContract.Presenter presenter;
   private RecyclerView recyclerView;
   private ChatAdapter chatAdapter;
+  private TextView profileNameChat;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +27,8 @@ public class ChatActivity
 
     // do the setup
     ChatScreen.configure(this);
+
+    profileNameChat = findViewById(R.id.profileNameChat);
 
     chatAdapter = new ChatAdapter(new View.OnClickListener() {
       @Override
@@ -44,6 +47,7 @@ public class ChatActivity
 
     // do some work
     presenter.fetchData();
+    presenter.getUserTappedFromPreviousScreen();
   }
 
   @Override
@@ -57,5 +61,10 @@ public class ChatActivity
 
     // deal with the data
     // ((TextView) findViewById(R.id.data)).setText(viewModel.data);
+  }
+
+  @Override
+  public void displayUserTappedName(ChatViewModel viewModel) {
+    profileNameChat.setText(viewModel.userTapped.getName());
   }
 }

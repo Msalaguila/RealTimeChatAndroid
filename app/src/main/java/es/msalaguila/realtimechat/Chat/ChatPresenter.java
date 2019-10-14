@@ -55,5 +55,17 @@ public class ChatPresenter implements ChatContract.Presenter {
 
   }
 
+  @Override
+  public void getUserTappedFromPreviousScreen() {
+    ChatState state = router.getDataFromPreviousScreen();
+
+    if (state != null) {
+      viewModel.userTapped = state.tappedUser;
+    }
+
+    // TODO: Now Testing only
+    view.get().displayUserTappedName(viewModel);
+  }
+
 
 }

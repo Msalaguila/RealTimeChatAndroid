@@ -8,6 +8,8 @@ interface ChatContract {
     void injectPresenter(Presenter presenter);
 
     void displayData(ChatViewModel viewModel);
+
+    void displayUserTappedName(ChatViewModel viewModel);
   }
 
   interface Presenter {
@@ -18,6 +20,8 @@ interface ChatContract {
     void injectRouter(Router router);
 
     void fetchData();
+
+    void getUserTappedFromPreviousScreen();
   }
 
   interface Model {
