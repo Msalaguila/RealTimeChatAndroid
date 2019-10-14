@@ -84,7 +84,7 @@ public class LoginPresenter implements LoginContract.Presenter {
         else if (error) {
           view.get().displayLoginErrorAlert();
         }
-        // TODO: User logged-in succesfully
+
         else {
           Activity activity = view.get().getActivity();
           view.get().finishActivity();

@@ -8,4 +8,7 @@
     <color name="grayColor">#955C5C5C</color>
     <color name="registerButtonColor">#5065A5</color>
     <color name="homeButtonsTextColor">#0A84FF</color>
+    <color name="toChatCellColor">#0089F9</color>
+    <color name="fromChatCellColor">#F0F0F0</color>
+    <color name="blackColor">#000000</color>
 </resources>

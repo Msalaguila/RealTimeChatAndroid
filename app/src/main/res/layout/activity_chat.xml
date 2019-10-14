@@ -9,7 +9,7 @@
     tools:context=".Chat.ChatActivity">
 
     <android.support.design.widget.AppBarLayout
-        android:id="@+id/newMessage_app_bar"
+        android:id="@+id/chat_app_bar"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -31,7 +31,12 @@
     </android.support.design.widget.AppBarLayout>
 
     <include
-        android:id="@+id/homeBar"
+        android:id="@+id/chatInputContainer"
         layout="@layout/bottom_chat_container"/>
+
+    <include
+        android:id="@+id/recyclerViewChat"
+        layout="@layout/chat_recycler_view" />
+
 
 </android.support.constraint.ConstraintLayout>

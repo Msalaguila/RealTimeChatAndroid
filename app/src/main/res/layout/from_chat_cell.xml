@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profileImageFromChat"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/user_logo"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/fromChatTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:maxWidth="240dp"
+        android:textColor="@color/blackColor"
+        android:padding="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintTop_toTopOf="@id/profileImageFromChat"
+        app:layout_constraintStart_toEndOf="@id/profileImageFromChat"
+        android:background="@drawable/border_chat_message_gray"/>
+
+</android.support.constraint.ConstraintLayout>

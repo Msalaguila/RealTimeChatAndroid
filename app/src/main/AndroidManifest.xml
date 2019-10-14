@@ -15,6 +15,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         >
+
+        <activity android:name=".Chat.ChatActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar">
+        </activity>
+
         <activity android:name=".login_register.RegisterActivity"
             android:screenOrientation="portrait">
 
@@ -35,9 +41,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar"/>
 
-        <activity android:name=".Chat.ChatActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/NoActionBar"/>
+
     </application>
 
 </manifest>
