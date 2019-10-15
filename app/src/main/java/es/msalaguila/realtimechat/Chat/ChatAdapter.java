@@ -13,6 +13,7 @@ import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,13 +25,18 @@ import es.msalaguila.realtimechat.R;
 
 public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-  private List<RegisteredUser> usersLoaded;
   private List<Message> chatMessages;
   private final View.OnClickListener clickListener;
+  private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+  String currentUserID = mAuth.getCurrentUser().getUid();
+
+  private static int TYPE_FROM = 1;
+  private static int TYPE_TO = 2;
 
   public ChatAdapter(View.OnClickListener clickListener) {
     this.chatMessages = new ArrayList<>();
     this.clickListener = clickListener;
+
   }
 
   public void addMessage(Message item) {
@@ -48,20 +54,48 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     notifyDataSetChanged();
   }
 
+
+  @Override
+  public int getItemViewType(int position) {
+    Message currentMessage = chatMessages.get(position);
+    if (currentMessage.getFromID().equals(currentUserID)) {
+      return TYPE_TO;
+    } else {
+      return TYPE_FROM;
+    }
+  }
+
   @NonNull
   @Override
   public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int position) {
-    View view = LayoutInflater.from(parent.getContext())
-            .inflate(R.layout.to_chat_cell, parent, false);
-    return new ChatAdapter.ToViewHolder(view);
+    View view;
+    if (position == TYPE_TO) { // for call layout
+      // for call layout
+      view = LayoutInflater.from(parent.getContext()).inflate(R.layout.to_chat_cell, parent, false);
+      return new ToViewHolder(view);
+    } else {
+      view = LayoutInflater.from(parent.getContext()).inflate(R.layout.from_chat_cell, parent, false);
+      return new FromViewHolder(view);
+    }
   }
 
   @Override
   public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+    if (getItemViewType(position) == TYPE_TO) {
+      ((ToViewHolder) holder).setToDetails(chatMessages.get(position));
+    } else {
+      ((FromViewHolder) holder).setFromDetails(chatMessages.get(position));
+    }
+
     // holder.itemView.setTag(usersLoaded.get(position));
     // holder.itemView.setOnClickListener(clickListener);
-
-    ((ToViewHolder) holder).setToDetails(chatMessages.get(position));
+   /* Message currentMessage = chatMessages.get(position);
+    ((ToViewHolder) holder).setToDetails(chatMessages.get(position));*/
+    /*if (currentMessage.getFromID().equals(currentUserID)) {
+      ((ToViewHolder) holder).setToDetails(chatMessages.get(position));
+    } else {
+      ((FromViewHolder) holder).setFromDetails(chatMessages.get(position));
+    }*/
    /* holder.house_name.setText(houseList.get(position).apartmentName);
     holder.price.setText(houseList.get(position).price);
     holder.ref_number.setText(houseList.get(position).referenceNumber);*/
@@ -102,7 +136,6 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     ToViewHolder(View view) {
       super(view);
-      // house_name = view.findViewById(R.id.house_name);
       textView = view.findViewById(R.id.toChatTextView);
     }
 
