@@ -74,6 +74,7 @@ public class ChatActivity
     // do some work
     presenter.fetchData();
     presenter.getUserTappedFromPreviousScreen();
+    presenter.loadMessagesForTappedUser();
   }
 
   @Override
@@ -97,6 +98,16 @@ public class ChatActivity
   @Override
   public void cleanInputTextField() {
     inputEditText.getText().clear();
+  }
+
+  @Override
+  public void displayChatMessages(final ChatViewModel viewModel) {
+    runOnUiThread(new Runnable() {
+      @Override
+      public void run() {
+        chatAdapter.setMessages(viewModel.chatMessages);
+      }
+    });
   }
 
   private boolean isInputTextFieldFull() {

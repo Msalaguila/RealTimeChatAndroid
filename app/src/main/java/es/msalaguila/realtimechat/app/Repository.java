@@ -1,9 +1,7 @@
 package es.msalaguila.realtimechat.app;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.net.Uri;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -13,7 +11,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -25,12 +22,15 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 import es.msalaguila.realtimechat.Data.LoginUser;
+import es.msalaguila.realtimechat.Data.Message;
 import es.msalaguila.realtimechat.Data.RegisteredUser;
+import es.msalaguila.realtimechat.Data.SortMessageByTimestamp;
 import es.msalaguila.realtimechat.Data.User;
 
 public class Repository implements RepositoryInterface {
@@ -41,10 +41,14 @@ public class Repository implements RepositoryInterface {
 
   private static Repository INSTANCE;
 
+  DatabaseReference refInsideChat = FirebaseDatabase.getInstance().getReference().child("user-messages");
+
   private Context context;
 
   // Array to retrieve users from the FirebaseDatabase
   private ArrayList<RegisteredUser> currentUsers = new ArrayList<>();
+
+  private ArrayList<Message> chatMessages = new ArrayList<>();
 
   public static RepositoryInterface getInstance(Context context) {
     if (INSTANCE == null) {
@@ -200,7 +204,6 @@ public class Repository implements RepositoryInterface {
               @Override
               public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String snapshot = dataSnapshot.toString();
-                Log.d("Repository", snapshot);
 
                 HashMap<String, Object> dictionary = (HashMap<String, Object>) dataSnapshot.getValue();
                 String name = (String) dictionary.get("name");
@@ -227,7 +230,6 @@ public class Repository implements RepositoryInterface {
     ref.addChildEventListener(new ChildEventListener() {
       @Override
       public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-        Log.d("Repository", dataSnapshot.toString());
 
         String uid = dataSnapshot.getKey();
 
@@ -259,6 +261,119 @@ public class Repository implements RepositoryInterface {
       @Override
       public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError databaseError) {
+
+      }
+    });
+  }
+
+  @Override
+  public void loadMessagesForTappedUserInsideChat(RegisteredUser tappedUser
+          , final LoadMessagesForTappedUserInsideChat callback) {
+
+    final String tappedUserUID = tappedUser.getId();
+
+    getUserWithUID(tappedUserUID, new GetUserWithUID() {
+      @Override
+      public void onUserRetrievedWithUID(User user) {
+
+        final String profileImageURL = user.getImageUrl();
+
+        String currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        getMessageForUser(profileImageURL, currentUserID, tappedUserUID, callback);
+      }
+    });
+  }
+
+  private void getMessageForUser(final String profileImageURL, String currentUserID
+          , final String tappedUserUID, final LoadMessagesForTappedUserInsideChat callback) {
+
+    refInsideChat.child(currentUserID).addChildEventListener(new ChildEventListener() {
+      @Override
+      public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+        String messageID = dataSnapshot.getKey();
+
+        DatabaseReference messageRef = FirebaseDatabase.getInstance().getReference()
+                .child("messages").child(messageID);
+
+        getMessageWithUID(messageRef, profileImageURL, tappedUserUID, callback);
+      }
+
+      @Override
+      public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+      }
+
+      @Override
+      public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+      }
+
+      @Override
+      public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError databaseError) {
+
+      }
+    });
+  }
+
+  private void getMessageWithUID(DatabaseReference messageRef
+          , final String profileImageURL, final String tappedUserUID
+          , final LoadMessagesForTappedUserInsideChat callback) {
+    messageRef.addValueEventListener(new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+        Log.d("Repository Message", dataSnapshot.toString());
+
+        HashMap<String, Object> dictionary = (HashMap<String, Object>) dataSnapshot.getValue();
+        String text = (String) dictionary.get("text");
+        Long timestamp = (Long) dictionary.get("timestamp");
+        String toID = (String) dictionary.get("toID");
+        String fromID = (String) dictionary.get("fromID");
+
+        Message message = new Message(fromID, toID, timestamp, text, profileImageURL);
+
+        if (message.chatPartnerID().equals(tappedUserUID)) {
+          chatMessages.add(message);
+          Collections.sort(chatMessages, new SortMessageByTimestamp());
+        }
+        callback.onMessagesLoaded(chatMessages);
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError databaseError) {
+
+      }
+    });
+  }
+
+  @Override
+  public void getUserWithUID(String uid, final GetUserWithUID callback) {
+    DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("users").child(uid);
+    ref.addListenerForSingleValueEvent(new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+        Log.d("Repository", "User with UID: " + dataSnapshot.toString());
+
+        String userUID = dataSnapshot.getKey();
+
+        HashMap<String, Object> dictionary = (HashMap<String, Object>) dataSnapshot.getValue();
+        String name = (String) dictionary.get("name");
+        String email = (String) dictionary.get("email");
+        String profileImageUrl = (String) dictionary.get("profileImageUrl");
+
+        User user = new User(name, email, profileImageUrl);
+
+        callback.onUserRetrievedWithUID(user);
       }
 
       @Override
@@ -376,6 +491,4 @@ public class Repository implements RepositoryInterface {
               }
             });
   }
-
-
 }

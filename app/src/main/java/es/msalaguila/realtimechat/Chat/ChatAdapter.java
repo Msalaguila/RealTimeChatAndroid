@@ -18,32 +18,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import es.msalaguila.realtimechat.Data.Message;
 import es.msalaguila.realtimechat.Data.RegisteredUser;
-import es.msalaguila.realtimechat.NewMessage.NewMessageAdapter;
 import es.msalaguila.realtimechat.R;
 
 public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
   private List<RegisteredUser> usersLoaded;
+  private List<Message> chatMessages;
   private final View.OnClickListener clickListener;
 
   public ChatAdapter(View.OnClickListener clickListener) {
-
+    this.chatMessages = new ArrayList<>();
     this.clickListener = clickListener;
   }
 
-  public void addItem(RegisteredUser item) {
-    usersLoaded.add(item);
+  public void addMessage(Message item) {
+    chatMessages.add(item);
     notifyDataSetChanged();
   }
 
-  public void addItems(List<RegisteredUser> items) {
-    usersLoaded.addAll(items);
+  public void addMessages(List<Message> items) {
+    chatMessages.addAll(items);
     notifyDataSetChanged();
   }
 
-  public void setItems(List<RegisteredUser> items) {
-    usersLoaded = items;
+  public void setMessages(List<Message> items) {
+    chatMessages = items;
     notifyDataSetChanged();
   }
 
@@ -60,6 +61,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     // holder.itemView.setTag(usersLoaded.get(position));
     // holder.itemView.setOnClickListener(clickListener);
 
+    ((ToViewHolder) holder).setToDetails(chatMessages.get(position));
    /* holder.house_name.setText(houseList.get(position).apartmentName);
     holder.price.setText(houseList.get(position).price);
     holder.ref_number.setText(houseList.get(position).referenceNumber);*/
@@ -67,7 +69,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
   @Override
   public int getItemCount() {
-    return 50;
+    return chatMessages.size();
   }
 
   private void loadImageFromURL(ImageView imageView, String imageUrl){
@@ -88,6 +90,11 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
       textView = view.findViewById(R.id.fromChatTextView);
       profileImage = view.findViewById(R.id.profileImageFromChat);
     }
+
+    private void setFromDetails(Message message) {
+      textView.setText(message.getMessage());
+      loadImageFromURL(profileImage, message.getProfileImageURL());
+    }
   }
 
   class ToViewHolder extends RecyclerView.ViewHolder {
@@ -97,6 +104,10 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
       super(view);
       // house_name = view.findViewById(R.id.house_name);
       textView = view.findViewById(R.id.toChatTextView);
+    }
+
+    private void setToDetails(Message message) {
+      textView.setText(message.getMessage());
     }
   }
 }

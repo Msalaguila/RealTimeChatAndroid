@@ -1,9 +1,9 @@
 package es.msalaguila.realtimechat.Chat;
 
-import android.util.Log;
-
 import java.lang.ref.WeakReference;
+import java.util.List;
 
+import es.msalaguila.realtimechat.Data.Message;
 import es.msalaguila.realtimechat.Data.RegisteredUser;
 import es.msalaguila.realtimechat.app.RepositoryInterface;
 
@@ -77,8 +77,20 @@ public class ChatPresenter implements ChatContract.Presenter {
       @Override
       public void onMessageSent() {
         view.get().cleanInputTextField();
+      }
+    });
+  }
 
-        // TODO: Reload New messages
+  @Override
+  public void loadMessagesForTappedUser() {
+    model.loadMessagesForTappedUserInsideChat(viewModel.userTapped
+            , new RepositoryInterface.LoadMessagesForTappedUserInsideChat() {
+      @Override
+      public void onMessagesLoaded(List<Message> messages) {
+
+        //TODO: Testing elements are sorted
+        viewModel.chatMessages = messages;
+        view.get().displayChatMessages(viewModel);
       }
     });
   }

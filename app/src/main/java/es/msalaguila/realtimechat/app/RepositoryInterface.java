@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import es.msalaguila.realtimechat.Data.LoginUser;
+import es.msalaguila.realtimechat.Data.Message;
 import es.msalaguila.realtimechat.Data.RegisteredUser;
+import es.msalaguila.realtimechat.Data.User;
 
 public interface RepositoryInterface {
 
@@ -37,6 +39,14 @@ public interface RepositoryInterface {
     void onMessageSent();
   }
 
+  interface LoadMessagesForTappedUserInsideChat {
+    void onMessagesLoaded(List<Message> messages);
+  }
+
+  interface GetUserWithUID {
+    void onUserRetrievedWithUID(User user);
+  }
+
   void sendMessageToUser(String message, RegisteredUser userMessageSentTo,
                          RepositoryInterface.SendMessage callback);
 
@@ -51,4 +61,9 @@ public interface RepositoryInterface {
   void getCurrentUser(RepositoryInterface.GetCurrentUser callback);
 
   void getCurrentUsers(RepositoryInterface.GetCurrentUsers callback);
+
+  void loadMessagesForTappedUserInsideChat(RegisteredUser tappedUser
+          , RepositoryInterface.LoadMessagesForTappedUserInsideChat callback);
+
+  void getUserWithUID(String uid, RepositoryInterface.GetUserWithUID callback);
 }

@@ -15,6 +15,8 @@ interface ChatContract {
     void displayUserTappedName(ChatViewModel viewModel);
 
     void cleanInputTextField();
+
+    void displayChatMessages(ChatViewModel viewModel);
   }
 
   interface Presenter {
@@ -29,6 +31,8 @@ interface ChatContract {
     void getUserTappedFromPreviousScreen();
 
     void sendButtonPressed(String textToSend);
+
+    void loadMessagesForTappedUser();
   }
 
   interface Model {
@@ -36,6 +40,9 @@ interface ChatContract {
 
     void sendMessageToUser(String textToSend, RegisteredUser userToSendMessageTo,
                            RepositoryInterface.SendMessage callback);
+
+    void loadMessagesForTappedUserInsideChat(RegisteredUser userToLoadMessages
+            , RepositoryInterface.LoadMessagesForTappedUserInsideChat callback);
   }
 
   interface Router {
