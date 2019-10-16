@@ -6,8 +6,7 @@ public class HomeMessage {
   private String profileName;
   private Long timestamp;
   private String message;
-  private String fromID;
-  private String toID;
+  private String uid;
 
   public HomeMessage(String profileImageURL, String profileName, Long timestamp, String message) {
     this.profileImageURL = profileImageURL;
@@ -22,24 +21,6 @@ public class HomeMessage {
     this.profileName = profileName;
     this.timestamp = timestamp;
     this.message = message;
-    this.fromID = fromID;
-    this.toID = toID;
-  }
-
-  public void setFromID(String fromID) {
-    this.fromID = fromID;
-  }
-
-  public void setToID(String toID) {
-    this.toID = toID;
-  }
-
-  public String getFromID() {
-    return fromID;
-  }
-
-  public String getToID() {
-    return toID;
   }
 
   public void setProfileImageURL(String profileImageURL) {

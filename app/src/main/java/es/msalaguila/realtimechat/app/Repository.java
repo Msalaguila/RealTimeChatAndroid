@@ -32,6 +32,7 @@ import es.msalaguila.realtimechat.Data.HomeMessage;
 import es.msalaguila.realtimechat.Data.LoginUser;
 import es.msalaguila.realtimechat.Data.Message;
 import es.msalaguila.realtimechat.Data.RegisteredUser;
+import es.msalaguila.realtimechat.Data.SortHomeMessageByTimestamp;
 import es.msalaguila.realtimechat.Data.SortMessageByTimestamp;
 import es.msalaguila.realtimechat.Data.User;
 
@@ -528,6 +529,8 @@ public class Repository implements RepositoryInterface {
   @Override
   public void loadHomeMessages(final LoadHomeMessages callback) {
 
+    homeMessages.clear();
+
     // 1. Load the Home Messages
     homeMessagesListener = homeMessagesReference.child(currentUserInAppID).addChildEventListener(new ChildEventListener() {
       @Override
@@ -552,7 +555,7 @@ public class Repository implements RepositoryInterface {
 
       @Override
       public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
+        // TODO: Complete code to receive new messages
       }
 
       @Override
@@ -572,9 +575,11 @@ public class Repository implements RepositoryInterface {
     });
   }
 
-  private void getUserWithUIDForHome(final String text, final Long timestamp, String fromID
+  private HashMap<String, HomeMessage> latestMessagesMap = new HashMap<>();
+
+  private void getUserWithUIDForHome(final String text, final Long timestamp, final String fromID
           , final LoadHomeMessages callback) {
-    homeUsersReference.child(fromID).addListenerForSingleValueEvent(new ValueEventListener() {
+    homeUsersReference.child(fromID).addValueEventListener(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
         Log.d("Repository", "User Retrieved for Home: " + dataSnapshot.toString());
@@ -585,7 +590,11 @@ public class Repository implements RepositoryInterface {
         String name = (String) values.get("name");
 
         HomeMessage homeMessage = new HomeMessage(profileImageUrl, name, timestamp, text);
+
+        latestMessagesMap.put(dataSnapshot.getKey(), homeMessage);
+
         homeMessages.add(homeMessage);
+        Collections.sort(homeMessages, new SortHomeMessageByTimestamp());
         callback.onHomeMessagesLoaded(homeMessages);
       }
 
@@ -594,7 +603,5 @@ public class Repository implements RepositoryInterface {
 
       }
     });
-
   }
-
 }

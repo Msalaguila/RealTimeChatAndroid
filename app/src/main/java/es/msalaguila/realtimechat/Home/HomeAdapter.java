@@ -15,7 +15,10 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -90,14 +93,14 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     final TextView message;
     final CircleImageView profileImageView;
     final TextView name;
-    final TextView date;
+    final TextView dateText;
 
     NormalViewHolder(View view) {
       super(view);
       message = view.findViewById(R.id.messageTextViewHomeCell);
       profileImageView = view.findViewById(R.id.profileImageFromHomeCell);
       name = view.findViewById(R.id.nameTextViewHomeCell);
-      date = view.findViewById(R.id.dateTextViewHomeCell);
+      dateText = view.findViewById(R.id.dateTextViewHomeCell);
 
     }
 
@@ -105,7 +108,12 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
       message.setText(homeMessage.getMessage());
       loadImageFromURL(profileImageView, homeMessage.getProfileImageURL());
       name.setText(homeMessage.getProfileName());
-      date.setText(homeMessage.getTimestamp().toString());
+
+      Date date = new Date(homeMessage.getTimestamp()*1000);
+      SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+
+      // String s = new SimpleDateFormat("HH:mm:ss").format(timestamp);
+      dateText.setText(format.format(date));
     }
   }
 }
