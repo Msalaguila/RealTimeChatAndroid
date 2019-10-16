@@ -312,8 +312,6 @@ public class Repository implements RepositoryInterface {
   private void getMessageForUser(final String profileImageURL, String currentUserID
           , final String tappedUserUID, final LoadMessagesForTappedUserInsideChat callback) {
 
-    Log.d("Repository","Reference set in: " + currentUserID);
-
     listenerInsideChat = refInsideChat.child(currentUserID).addChildEventListener(new ChildEventListener() {
       @Override
       public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -322,9 +320,6 @@ public class Repository implements RepositoryInterface {
 
         refMessagesInsideChat = FirebaseDatabase.getInstance().getReference()
                 .child("messages").child(messageID);
-
-        Log.d("Repository","MESSAGE Reference set in: " + messageID);
-        // currentMessageID = messageID;
 
         getMessageWithUID(refMessagesInsideChat, profileImageURL, tappedUserUID, callback);
       }
