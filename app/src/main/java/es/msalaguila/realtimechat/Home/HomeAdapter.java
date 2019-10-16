@@ -112,7 +112,6 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
       Date date = new Date(homeMessage.getTimestamp()*1000);
       SimpleDateFormat format = new SimpleDateFormat("HH:mm");
 
-      // String s = new SimpleDateFormat("HH:mm:ss").format(timestamp);
       dateText.setText(format.format(date));
     }
   }
