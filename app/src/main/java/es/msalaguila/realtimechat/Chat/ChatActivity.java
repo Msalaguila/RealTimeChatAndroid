@@ -73,8 +73,6 @@ public class ChatActivity
     recyclerView = findViewById(R.id.recyclerViewChat);
     recyclerView.setAdapter(chatAdapter);
 
-    presenter.getUserTappedFromPreviousScreen();
-    presenter.loadMessagesForTappedUser();
   }
 
   @Override
@@ -83,13 +81,15 @@ public class ChatActivity
 
     // do some work
     presenter.fetchData();
+    presenter.getUserTappedFromPreviousScreen();
+    presenter.loadMessagesForTappedUser();
   }
 
   @Override
   protected void onPause() {
     super.onPause();
 
-    // presenter.eliminateInsideChatReference();
+    presenter.eliminateInsideChatReference();
   }
 
   @Override
