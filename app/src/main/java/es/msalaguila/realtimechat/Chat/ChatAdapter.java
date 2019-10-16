@@ -25,7 +25,7 @@ import es.msalaguila.realtimechat.R;
 
 public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-  private List<Message> chatMessages;
+  public List<Message> chatMessages;
   private final View.OnClickListener clickListener;
   private FirebaseAuth mAuth = FirebaseAuth.getInstance();
   String currentUserID = mAuth.getCurrentUser().getUid();
@@ -36,7 +36,6 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
   public ChatAdapter(View.OnClickListener clickListener) {
     this.chatMessages = new ArrayList<>();
     this.clickListener = clickListener;
-
   }
 
   public void addMessage(Message item) {

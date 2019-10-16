@@ -87,8 +87,6 @@ public class ChatPresenter implements ChatContract.Presenter {
             , new RepositoryInterface.LoadMessagesForTappedUserInsideChat() {
       @Override
       public void onMessagesLoaded(List<Message> messages) {
-
-        //TODO: Testing elements are sorted
         viewModel.chatMessages = messages;
         view.get().displayChatMessages(viewModel);
       }

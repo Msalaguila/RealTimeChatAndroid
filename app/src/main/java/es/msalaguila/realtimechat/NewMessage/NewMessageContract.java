@@ -35,7 +35,7 @@ interface NewMessageContract {
 
     void getCurrentUsers();
 
-    void userTapped(Activity activity, RegisteredUser userTapped);
+    void userTapped(RegisteredUser userTapped);
   }
 
   interface Model {

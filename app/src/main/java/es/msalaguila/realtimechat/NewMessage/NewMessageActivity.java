@@ -42,7 +42,7 @@ public class NewMessageActivity
       @Override
       public void onClick(View view) {
         RegisteredUser userTapped = (RegisteredUser) view.getTag();
-        presenter.userTapped(getActivity(), userTapped);
+        presenter.userTapped(userTapped);
       }
     });
 

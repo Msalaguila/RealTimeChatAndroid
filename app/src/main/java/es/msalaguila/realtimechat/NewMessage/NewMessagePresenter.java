@@ -80,11 +80,12 @@ public class NewMessagePresenter implements NewMessageContract.Presenter {
   }
 
   @Override
-  public void userTapped(Activity activity, RegisteredUser userTapped) {
+  public void userTapped(RegisteredUser userTapped) {
     ChatState state = new ChatState();
     state.tappedUser = userTapped;
-    router.passDataToChat(state);
+    Activity activity = view.get().getActivity();
     router.routeToChat(activity);
+    router.passDataToChat(state);
     view.get().finishActivity();
   }
 

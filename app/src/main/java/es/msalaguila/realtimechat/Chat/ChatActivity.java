@@ -2,6 +2,7 @@ package es.msalaguila.realtimechat.Chat;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -25,6 +26,8 @@ public class ChatActivity
   private ImageView backButtonChat;
   private EditText inputEditText;
   private Button sendButton;
+
+  //TODO: Remove chatReference from Firebase when getting out of this Activity
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +101,7 @@ public class ChatActivity
   @Override
   public void cleanInputTextField() {
     inputEditText.getText().clear();
+    inputEditText.setText("");
   }
 
   @Override
@@ -106,6 +110,7 @@ public class ChatActivity
       @Override
       public void run() {
         chatAdapter.setMessages(viewModel.chatMessages);
+        recyclerView.scrollToPosition(chatAdapter.chatMessages.size() - 1);
       }
     });
   }
