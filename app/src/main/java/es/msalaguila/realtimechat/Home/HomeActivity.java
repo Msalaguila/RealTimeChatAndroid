@@ -3,6 +3,7 @@ package es.msalaguila.realtimechat.Home;
 import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -28,6 +29,9 @@ public class HomeActivity
   private Button newMessageButton;
   private CircleImageView profilePhotoImageView;
   private TextView profileNameHome;
+
+  private RecyclerView homeRecyclerView;
+  private HomeAdapter homeAdapter;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +59,16 @@ public class HomeActivity
         presenter.newMessageButtonPressed();
       }
     });
+
+    homeAdapter = new HomeAdapter(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+
+      }
+    });
+
+    homeRecyclerView = findViewById(R.id.recyclerViewHome);
+    homeRecyclerView.setAdapter(homeAdapter);
   }
 
   @Override
@@ -99,6 +113,16 @@ public class HomeActivity
     loadImageFromURL(profilePhotoImageView, profileImageURL);
   }
 
+  @Override
+  public void displayHomeMessages(final HomeViewModel viewModel) {
+    runOnUiThread(new Runnable() {
+      @Override
+      public void run() {
+        homeAdapter.setMessages(viewModel.homeMessageList);
+      }
+    });
+  }
+
   private void loadImageFromURL(ImageView imageView, String imageUrl){
     RequestManager reqManager = Glide.with(imageView.getContext());
     RequestBuilder reqBuilder = reqManager.load(imageUrl);
@@ -107,6 +131,5 @@ public class HomeActivity
     reqBuilder.apply(reqOptions);
     reqBuilder.into(imageView);
   }
-
 
 }

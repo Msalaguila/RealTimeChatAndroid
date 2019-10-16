@@ -4,6 +4,7 @@ import android.app.Activity;
 
 import java.lang.ref.WeakReference;
 
+import es.msalaguila.realtimechat.app.Repository;
 import es.msalaguila.realtimechat.app.RepositoryInterface;
 
 interface HomeContract {
@@ -18,6 +19,8 @@ interface HomeContract {
     void finishActivity();
 
     void displayCurrentUser(HomeViewModel viewModel);
+
+    void displayHomeMessages(HomeViewModel viewModel);
   }
 
   interface Presenter {
@@ -44,6 +47,8 @@ interface HomeContract {
     void logoutUser(RepositoryInterface.LogoutButtonPressed callback);
 
     void getCurrentUser(RepositoryInterface.GetCurrentUser callback);
+
+    void loadHomeMessages(RepositoryInterface.LoadHomeMessages callback);
   }
 
   interface Router {

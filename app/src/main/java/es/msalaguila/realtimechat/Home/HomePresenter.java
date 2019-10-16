@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.util.Log;
 
 import java.lang.ref.WeakReference;
+import java.util.List;
 
+import es.msalaguila.realtimechat.Data.HomeMessage;
 import es.msalaguila.realtimechat.Data.RegisteredUser;
 import es.msalaguila.realtimechat.app.RepositoryInterface;
 
@@ -76,6 +78,15 @@ public class HomePresenter implements HomeContract.Presenter {
             public void onGetCurrentUser(RegisteredUser user) {
               viewModel.registeredUser = user;
               view.get().displayCurrentUser(viewModel);
+
+              model.loadHomeMessages(new RepositoryInterface.LoadHomeMessages() {
+                @Override
+                public void onHomeMessagesLoaded(List<HomeMessage> homeMessages) {
+
+                  viewModel.homeMessageList = homeMessages;
+                  view.get().displayHomeMessages(viewModel);
+                }
+              });
             }
           });
         }

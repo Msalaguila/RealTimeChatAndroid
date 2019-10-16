@@ -39,4 +39,9 @@ public class HomeModel implements HomeContract.Model {
   public void getCurrentUser(RepositoryInterface.GetCurrentUser callback) {
     repository.getCurrentUser(callback);
   }
+
+  @Override
+  public void loadHomeMessages(RepositoryInterface.LoadHomeMessages callback) {
+    repository.loadHomeMessages(callback);
+  }
 }

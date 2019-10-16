@@ -29,4 +29,9 @@
 
     </android.support.design.widget.AppBarLayout>
 
+    <include
+        android:id="@+id/recyclerViewHome"
+        layout="@layout/home_recycler_view"
+        />
+
 </android.support.constraint.ConstraintLayout>

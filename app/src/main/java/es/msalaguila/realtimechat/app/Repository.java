@@ -23,10 +23,12 @@ import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.EventListener;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import es.msalaguila.realtimechat.Data.HomeMessage;
 import es.msalaguila.realtimechat.Data.LoginUser;
 import es.msalaguila.realtimechat.Data.Message;
 import es.msalaguila.realtimechat.Data.RegisteredUser;
@@ -52,12 +54,17 @@ public class Repository implements RepositoryInterface {
   private DatabaseReference homeMessagesReference = FirebaseDatabase.getInstance().getReference().child("latest-messages");
   private ChildEventListener homeMessagesListener;
 
+  private DatabaseReference homeUsersReference = FirebaseDatabase.getInstance().getReference().child("users");
+  private EventListener homeUsersListener;
+
   private Context context;
 
   // Array to retrieve users from the FirebaseDatabase
   private ArrayList<RegisteredUser> currentUsers = new ArrayList<>();
 
   private ArrayList<Message> chatMessages = new ArrayList<>();
+
+  private ArrayList<HomeMessage> homeMessages = new ArrayList<>();
 
   public static RepositoryInterface getInstance(Context context) {
     if (INSTANCE == null) {
@@ -123,6 +130,7 @@ public class Repository implements RepositoryInterface {
   private void sendMessageToUserHome(RegisteredUser userMessageSentTo, HashMap<String, Object> values) {
     homeMessagesReference.child(currentUserInAppID).child(userMessageSentTo.getId()).setValue(values);
 
+    homeMessagesReference.child(userMessageSentTo.getId()).child(currentUserInAppID).setValue(values);
   }
 
   @Override
@@ -515,6 +523,78 @@ public class Repository implements RepositoryInterface {
     refInsideChat.child(currentUserInAppID).removeEventListener(listenerInsideChat);
 
     Log.d("Repository", "Reference removed from: " + currentUserInAppID);
+  }
+
+  @Override
+  public void loadHomeMessages(final LoadHomeMessages callback) {
+
+    // 1. Load the Home Messages
+    homeMessagesListener = homeMessagesReference.child(currentUserInAppID).addChildEventListener(new ChildEventListener() {
+      @Override
+      public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+        Log.d("Repository", "Last message: " + dataSnapshot.toString());
+
+        HashMap<String, Object> values = (HashMap<String, Object>) dataSnapshot.getValue();
+
+        String messageID = dataSnapshot.getKey();
+
+        String text = (String) values.get("text");
+        Long timestamp = (Long) values.get("timestamp");
+        String toID = (String) values.get("toID");
+        String fromID = (String) values.get("fromID");
+
+        if (toID.equals(currentUserInAppID)) {
+          getUserWithUIDForHome(text, timestamp, fromID, callback);
+        } else {
+          getUserWithUIDForHome(text, timestamp, toID, callback);
+        }
+      }
+
+      @Override
+      public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+      }
+
+      @Override
+      public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+      }
+
+      @Override
+      public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError databaseError) {
+
+      }
+    });
+  }
+
+  private void getUserWithUIDForHome(final String text, final Long timestamp, String fromID
+          , final LoadHomeMessages callback) {
+    homeUsersReference.child(fromID).addListenerForSingleValueEvent(new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+        Log.d("Repository", "User Retrieved for Home: " + dataSnapshot.toString());
+
+        HashMap<String, Object> values = (HashMap<String, Object>) dataSnapshot.getValue();
+
+        String profileImageUrl = (String) values.get("profileImageUrl");
+        String name = (String) values.get("name");
+
+        HomeMessage homeMessage = new HomeMessage(profileImageUrl, name, timestamp, text);
+        homeMessages.add(homeMessage);
+        callback.onHomeMessagesLoaded(homeMessages);
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError databaseError) {
+
+      }
+    });
+
   }
 
 }

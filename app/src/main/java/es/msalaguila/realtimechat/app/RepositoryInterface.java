@@ -3,6 +3,7 @@ package es.msalaguila.realtimechat.app;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.msalaguila.realtimechat.Data.HomeMessage;
 import es.msalaguila.realtimechat.Data.LoginUser;
 import es.msalaguila.realtimechat.Data.Message;
 import es.msalaguila.realtimechat.Data.RegisteredUser;
@@ -47,6 +48,10 @@ public interface RepositoryInterface {
     void onUserRetrievedWithUID(User user);
   }
 
+  interface LoadHomeMessages {
+    void onHomeMessagesLoaded(List<HomeMessage> homeMessages);
+  }
+
   void sendMessageToUser(String message, RegisteredUser userMessageSentTo,
                          RepositoryInterface.SendMessage callback);
 
@@ -68,4 +73,6 @@ public interface RepositoryInterface {
   void getUserWithUID(String uid, RepositoryInterface.GetUserWithUID callback);
 
   void eliminateInsideChatReference(RegisteredUser userTappedToRemoveRef);
+
+  void loadHomeMessages(RepositoryInterface.LoadHomeMessages callback);
 }
