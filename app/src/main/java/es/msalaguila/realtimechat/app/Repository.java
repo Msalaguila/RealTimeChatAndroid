@@ -41,7 +41,16 @@ public class Repository implements RepositoryInterface {
 
   private static Repository INSTANCE;
 
-  DatabaseReference refInsideChat = FirebaseDatabase.getInstance().getReference().child("user-messages");
+  private DatabaseReference refInsideChat = FirebaseDatabase.getInstance().getReference().child("user-messages");
+  private DatabaseReference refMessagesInsideChat = FirebaseDatabase.getInstance().getReference().child("messages");
+
+  private String currentUserInAppID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+  private ChildEventListener listenerInsideChat;
+  private ValueEventListener messageListenerInsideChat;
+
+  private DatabaseReference homeMessagesReference = FirebaseDatabase.getInstance().getReference().child("latest-messages");
+  private ChildEventListener homeMessagesListener;
 
   private Context context;
 
@@ -71,6 +80,8 @@ public class Repository implements RepositoryInterface {
     final String toUserID = userMessageSentTo.getId();
     Long timestamp = System.currentTimeMillis()/1000;
 
+
+
     Log.d("Repository", "From user ID " + fromUserID);
     Log.d("Repository", "To user ID " + toUserID);
 
@@ -79,6 +90,8 @@ public class Repository implements RepositoryInterface {
     values.put("fromID", fromUserID);
     values.put("toID", toUserID);
     values.put("timestamp", timestamp);
+
+    sendMessageToUserHome(userMessageSentTo, values);
 
     messageReference.updateChildren(values, new DatabaseReference.CompletionListener() {
       @Override
@@ -105,6 +118,11 @@ public class Repository implements RepositoryInterface {
         callback.onMessageSent();
       }
     });
+  }
+
+  private void sendMessageToUserHome(RegisteredUser userMessageSentTo, HashMap<String, Object> values) {
+    homeMessagesReference.child(currentUserInAppID).child(userMessageSentTo.getId()).setValue(values);
+
   }
 
   @Override
@@ -276,6 +294,8 @@ public class Repository implements RepositoryInterface {
 
     final String tappedUserUID = tappedUser.getId();
 
+    chatMessages.clear();
+
     getUserWithUID(tappedUserUID, new GetUserWithUID() {
       @Override
       public void onUserRetrievedWithUID(User user) {
@@ -292,16 +312,21 @@ public class Repository implements RepositoryInterface {
   private void getMessageForUser(final String profileImageURL, String currentUserID
           , final String tappedUserUID, final LoadMessagesForTappedUserInsideChat callback) {
 
-    refInsideChat.child(currentUserID).addChildEventListener(new ChildEventListener() {
+    Log.d("Repository","Reference set in: " + currentUserID);
+
+    listenerInsideChat = refInsideChat.child(currentUserID).addChildEventListener(new ChildEventListener() {
       @Override
       public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
         String messageID = dataSnapshot.getKey();
 
-        DatabaseReference messageRef = FirebaseDatabase.getInstance().getReference()
+        refMessagesInsideChat = FirebaseDatabase.getInstance().getReference()
                 .child("messages").child(messageID);
 
-        getMessageWithUID(messageRef, profileImageURL, tappedUserUID, callback);
+        Log.d("Repository","MESSAGE Reference set in: " + messageID);
+        // currentMessageID = messageID;
+
+        getMessageWithUID(refMessagesInsideChat, profileImageURL, tappedUserUID, callback);
       }
 
       @Override
@@ -329,10 +354,9 @@ public class Repository implements RepositoryInterface {
   private void getMessageWithUID(DatabaseReference messageRef
           , final String profileImageURL, final String tappedUserUID
           , final LoadMessagesForTappedUserInsideChat callback) {
-    messageRef.addValueEventListener(new ValueEventListener() {
+    messageListenerInsideChat = messageRef.addValueEventListener(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-        Log.d("Repository Message", dataSnapshot.toString());
 
         HashMap<String, Object> dictionary = (HashMap<String, Object>) dataSnapshot.getValue();
         String text = (String) dictionary.get("text");
@@ -362,7 +386,6 @@ public class Repository implements RepositoryInterface {
     ref.addListenerForSingleValueEvent(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-        Log.d("Repository", "User with UID: " + dataSnapshot.toString());
 
         String userUID = dataSnapshot.getKey();
 
@@ -491,4 +514,12 @@ public class Repository implements RepositoryInterface {
               }
             });
   }
+
+  @Override
+  public void eliminateInsideChatReference(RegisteredUser userTappedToRemoveRef) {
+    refInsideChat.child(currentUserInAppID).removeEventListener(listenerInsideChat);
+
+    Log.d("Repository", "Reference removed from: " + currentUserInAppID);
+  }
+
 }

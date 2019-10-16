@@ -93,5 +93,11 @@ public class ChatPresenter implements ChatContract.Presenter {
     });
   }
 
+  @Override
+  public void eliminateInsideChatReference() {
+    RegisteredUser tappedUser = viewModel.userTapped;
+    model.eliminateInsideChatReference(tappedUser);
+  }
+
 
 }

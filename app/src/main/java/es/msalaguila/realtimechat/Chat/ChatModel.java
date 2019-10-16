@@ -30,4 +30,9 @@ public class ChatModel implements ChatContract.Model {
           , RepositoryInterface.LoadMessagesForTappedUserInsideChat callback) {
     repository.loadMessagesForTappedUserInsideChat(userToLoadMessages, callback);
   }
+
+  @Override
+  public void eliminateInsideChatReference(RegisteredUser userTappedToRemoveRef) {
+    repository.eliminateInsideChatReference(userTappedToRemoveRef);
+  }
 }

@@ -11,8 +11,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.database.core.Repo;
+
+import es.msalaguila.realtimechat.Data.RegisteredUser;
 import es.msalaguila.realtimechat.NewMessage.NewMessageAdapter;
 import es.msalaguila.realtimechat.R;
+import es.msalaguila.realtimechat.app.Repository;
 
 public class ChatActivity
         extends AppCompatActivity implements ChatContract.View {
@@ -68,6 +72,9 @@ public class ChatActivity
 
     recyclerView = findViewById(R.id.recyclerViewChat);
     recyclerView.setAdapter(chatAdapter);
+
+    presenter.getUserTappedFromPreviousScreen();
+    presenter.loadMessagesForTappedUser();
   }
 
   @Override
@@ -76,8 +83,13 @@ public class ChatActivity
 
     // do some work
     presenter.fetchData();
-    presenter.getUserTappedFromPreviousScreen();
-    presenter.loadMessagesForTappedUser();
+  }
+
+  @Override
+  protected void onPause() {
+    super.onPause();
+
+    // presenter.eliminateInsideChatReference();
   }
 
   @Override

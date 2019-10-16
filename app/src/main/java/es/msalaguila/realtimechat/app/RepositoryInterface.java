@@ -66,4 +66,6 @@ public interface RepositoryInterface {
           , RepositoryInterface.LoadMessagesForTappedUserInsideChat callback);
 
   void getUserWithUID(String uid, RepositoryInterface.GetUserWithUID callback);
+
+  void eliminateInsideChatReference(RegisteredUser userTappedToRemoveRef);
 }

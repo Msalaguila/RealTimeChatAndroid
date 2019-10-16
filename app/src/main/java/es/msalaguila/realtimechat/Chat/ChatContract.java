@@ -33,6 +33,8 @@ interface ChatContract {
     void sendButtonPressed(String textToSend);
 
     void loadMessagesForTappedUser();
+
+    void eliminateInsideChatReference();
   }
 
   interface Model {
@@ -43,6 +45,8 @@ interface ChatContract {
 
     void loadMessagesForTappedUserInsideChat(RegisteredUser userToLoadMessages
             , RepositoryInterface.LoadMessagesForTappedUserInsideChat callback);
+
+    void eliminateInsideChatReference(RegisteredUser userTappedToRemoveRef);
   }
 
   interface Router {
