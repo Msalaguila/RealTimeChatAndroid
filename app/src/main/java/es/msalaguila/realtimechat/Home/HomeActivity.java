@@ -17,6 +17,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import es.msalaguila.realtimechat.Data.HomeMessage;
+import es.msalaguila.realtimechat.Data.RegisteredUser;
 import es.msalaguila.realtimechat.R;
 
 public class HomeActivity
@@ -62,8 +64,15 @@ public class HomeActivity
 
     homeAdapter = new HomeAdapter(new View.OnClickListener() {
       @Override
-      public void onClick(View v) {
+      public void onClick(View view) {
 
+        HomeMessage userTapped = (HomeMessage) view.getTag();
+        String name = userTapped.getProfileName();
+        String profileImageURL = userTapped.getProfileImageURL();
+        String userID = userTapped.getUser().getId();
+
+        RegisteredUser userToPassData = new RegisteredUser(name, "", profileImageURL, userID);
+        presenter.userTapped(userToPassData);
       }
     });
 

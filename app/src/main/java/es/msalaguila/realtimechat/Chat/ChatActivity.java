@@ -82,7 +82,6 @@ public class ChatActivity
     // do some work
     presenter.fetchData();
     presenter.getUserTappedFromPreviousScreen();
-    presenter.loadMessagesForTappedUser();
   }
 
   @Override
@@ -108,6 +107,7 @@ public class ChatActivity
   @Override
   public void displayUserTappedName(ChatViewModel viewModel) {
     profileNameChat.setText(viewModel.userTapped.getName());
+    presenter.loadMessagesForTappedUser();
   }
 
   @Override

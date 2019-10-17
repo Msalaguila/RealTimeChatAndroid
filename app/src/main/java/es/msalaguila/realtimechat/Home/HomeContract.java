@@ -4,6 +4,8 @@ import android.app.Activity;
 
 import java.lang.ref.WeakReference;
 
+import es.msalaguila.realtimechat.Chat.ChatState;
+import es.msalaguila.realtimechat.Data.RegisteredUser;
 import es.msalaguila.realtimechat.app.Repository;
 import es.msalaguila.realtimechat.app.RepositoryInterface;
 
@@ -37,6 +39,8 @@ interface HomeContract {
     void logoutButtonPressed();
 
     void newMessageButtonPressed();
+
+    void userTapped(RegisteredUser userTapped);
   }
 
   interface Model {
@@ -61,5 +65,9 @@ interface HomeContract {
     void routeToRegister(Activity activity);
 
     void routeToNewMessage(Activity activity);
+
+    void routeToChat(Activity activity);
+
+    void passDataToChat(ChatState state);
   }
 }

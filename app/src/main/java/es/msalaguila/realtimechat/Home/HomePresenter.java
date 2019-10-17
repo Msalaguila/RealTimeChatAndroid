@@ -6,6 +6,8 @@ import android.util.Log;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
+import es.msalaguila.realtimechat.Chat.ChatScreen;
+import es.msalaguila.realtimechat.Chat.ChatState;
 import es.msalaguila.realtimechat.Data.HomeMessage;
 import es.msalaguila.realtimechat.Data.RegisteredUser;
 import es.msalaguila.realtimechat.app.RepositoryInterface;
@@ -110,6 +112,15 @@ public class HomePresenter implements HomeContract.Presenter {
   public void newMessageButtonPressed() {
     Activity activity = view.get().getActivity();
     router.routeToNewMessage(activity);
+  }
+
+  @Override
+  public void userTapped(RegisteredUser userTapped) {
+    ChatState state = new ChatState();
+    state.tappedUser = userTapped;
+    Activity activity = view.get().getActivity();
+    router.routeToChat(activity);
+    router.passDataToChat(state);
   }
 
 

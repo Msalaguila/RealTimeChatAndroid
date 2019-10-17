@@ -7,6 +7,15 @@ public class HomeMessage {
   private Long timestamp;
   private String message;
   private String uid;
+  private User user;
+
+  public HomeMessage(String profileImageURL, String profileName, Long timestamp, String message, User user) {
+    this.profileImageURL = profileImageURL;
+    this.profileName = profileName;
+    this.timestamp = timestamp;
+    this.message = message;
+    this.user = user;
+  }
 
   public HomeMessage(String profileImageURL, String profileName, Long timestamp, String message) {
     this.profileImageURL = profileImageURL;
@@ -21,6 +30,22 @@ public class HomeMessage {
     this.profileName = profileName;
     this.timestamp = timestamp;
     this.message = message;
+  }
+
+  public User getUser() {
+    return user;
+  }
+
+  public void setUser(User user) {
+    this.user = user;
+  }
+
+  public void setUID(String uid) {
+    this.uid = uid;
+  }
+
+  public String getUID() {
+    return uid;
   }
 
   public void setProfileImageURL(String profileImageURL) {

@@ -89,7 +89,6 @@ public class Repository implements RepositoryInterface {
     Long timestamp = System.currentTimeMillis()/1000;
 
 
-
     Log.d("Repository", "From user ID " + fromUserID);
     Log.d("Repository", "To user ID " + toUserID);
 
@@ -398,7 +397,7 @@ public class Repository implements RepositoryInterface {
         String email = (String) dictionary.get("email");
         String profileImageUrl = (String) dictionary.get("profileImageUrl");
 
-        User user = new User(name, email, profileImageUrl);
+        User user = new User(userUID, name, email, profileImageUrl);
 
         callback.onUserRetrievedWithUID(user);
       }
@@ -547,15 +546,32 @@ public class Repository implements RepositoryInterface {
         String fromID = (String) values.get("fromID");
 
         if (toID.equals(currentUserInAppID)) {
-          getUserWithUIDForHome(text, timestamp, fromID, callback);
+          getUserWithUIDForHome(text, timestamp, fromID, callback, "");
         } else {
-          getUserWithUIDForHome(text, timestamp, toID, callback);
+          getUserWithUIDForHome(text, timestamp, toID, callback,"");
         }
       }
 
       @Override
       public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
         // TODO: Complete code to receive new messages
+
+        Log.d("Repository", "Last message RECEIVED: " + dataSnapshot.toString());
+
+        HashMap<String, Object> values = (HashMap<String, Object>) dataSnapshot.getValue();
+
+        String userID = dataSnapshot.getKey();
+
+        String text = (String) values.get("text");
+        Long timestamp = (Long) values.get("timestamp");
+        String toID = (String) values.get("toID");
+        String fromID = (String) values.get("fromID");
+
+        if (toID.equals(currentUserInAppID)) {
+          getUserWithUIDForHome(text, timestamp, fromID, callback, userID);
+        } else {
+          getUserWithUIDForHome(text, timestamp, toID, callback, userID);
+        }
       }
 
       @Override
@@ -578,7 +594,7 @@ public class Repository implements RepositoryInterface {
   private HashMap<String, HomeMessage> latestMessagesMap = new HashMap<>();
 
   private void getUserWithUIDForHome(final String text, final Long timestamp, final String fromID
-          , final LoadHomeMessages callback) {
+          , final LoadHomeMessages callback, String userID) {
     homeUsersReference.child(fromID).addValueEventListener(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -588,8 +604,12 @@ public class Repository implements RepositoryInterface {
 
         String profileImageUrl = (String) values.get("profileImageUrl");
         String name = (String) values.get("name");
+        String userID = dataSnapshot.getKey();
+        String email = (String) values.get("email");
 
-        HomeMessage homeMessage = new HomeMessage(profileImageUrl, name, timestamp, text);
+        User user = new User(userID, name, email, profileImageUrl);
+
+        HomeMessage homeMessage = new HomeMessage(profileImageUrl, name, timestamp, text, user);
 
         latestMessagesMap.put(dataSnapshot.getKey(), homeMessage);
 

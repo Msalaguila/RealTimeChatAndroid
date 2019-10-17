@@ -71,6 +71,8 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
   @Override
   public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
     if (getItemViewType(position) == NORMAL_TYPE) {
+      holder.itemView.setTag(chatMessages.get(position));
+      holder.itemView.setOnClickListener(clickListener);
       ((HomeAdapter.NormalViewHolder) holder).setToDetails(chatMessages.get(position));
     }
   }
