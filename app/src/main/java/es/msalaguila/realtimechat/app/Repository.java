@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EventListener;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -63,9 +64,14 @@ public class Repository implements RepositoryInterface {
   // Array to retrieve users from the FirebaseDatabase
   private ArrayList<RegisteredUser> currentUsers = new ArrayList<>();
 
+  // Array to retrieve chat messages inside Chat Activity from the FirebaseDatabase
   private ArrayList<Message> chatMessages = new ArrayList<>();
 
-  private ArrayList<HomeMessage> homeMessages = new ArrayList<>();
+  // Array to retrieve home messages inside Home Activity from the FirebaseDatabase
+
+  private HashMap<String, HomeMessage> latestMessagesMap = new HashMap<>();
+
+  // private ArrayList<HomeMessage> homeMessages = new ArrayList<>();
 
   public static RepositoryInterface getInstance(Context context) {
     if (INSTANCE == null) {
@@ -412,8 +418,6 @@ public class Repository implements RepositoryInterface {
   private void createNewUser(final RegisteredUser user, final RegisterNewUser callback) {
     mAuth = FirebaseAuth.getInstance();
 
-    // TODO: Complete method. Register user with email and password. Afterwards, upload image to
-
     Log.d("Repository", "Entered in Create User Method");
 
     String email = user.getEmail();
@@ -527,8 +531,7 @@ public class Repository implements RepositoryInterface {
 
   @Override
   public void loadHomeMessages(final LoadHomeMessages callback) {
-
-    homeMessages.clear();
+    // homeMessages.clear();
 
     // 1. Load the Home Messages
     homeMessagesListener = homeMessagesReference.child(currentUserInAppID).addChildEventListener(new ChildEventListener() {
@@ -591,8 +594,6 @@ public class Repository implements RepositoryInterface {
     });
   }
 
-  private HashMap<String, HomeMessage> latestMessagesMap = new HashMap<>();
-
   private void getUserWithUIDForHome(final String text, final Long timestamp, final String fromID
           , final LoadHomeMessages callback, String userID) {
     homeUsersReference.child(fromID).addValueEventListener(new ValueEventListener() {
@@ -613,9 +614,11 @@ public class Repository implements RepositoryInterface {
 
         latestMessagesMap.put(dataSnapshot.getKey(), homeMessage);
 
-        homeMessages.add(homeMessage);
-        Collections.sort(homeMessages, new SortHomeMessageByTimestamp());
-        callback.onHomeMessagesLoaded(homeMessages);
+        List<HomeMessage> valueList = new ArrayList<>(latestMessagesMap.values());
+
+        Collections.sort(valueList, new SortHomeMessageByTimestamp());
+
+        callback.onHomeMessagesLoaded(valueList);
       }
 
       @Override

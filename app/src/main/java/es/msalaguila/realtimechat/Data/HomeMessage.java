@@ -8,6 +8,7 @@ public class HomeMessage {
   private String message;
   private String uid;
   private User user;
+  private String keyToReloadHomeMessages;
 
   public HomeMessage(String profileImageURL, String profileName, Long timestamp, String message, User user) {
     this.profileImageURL = profileImageURL;
@@ -30,6 +31,14 @@ public class HomeMessage {
     this.profileName = profileName;
     this.timestamp = timestamp;
     this.message = message;
+  }
+
+  public String getKeyToReloadHomeMessages() {
+    return keyToReloadHomeMessages;
+  }
+
+  public void setKeyToReloadHomeMessages(String keyToReloadHomeMessages) {
+    this.keyToReloadHomeMessages = keyToReloadHomeMessages;
   }
 
   public User getUser() {
