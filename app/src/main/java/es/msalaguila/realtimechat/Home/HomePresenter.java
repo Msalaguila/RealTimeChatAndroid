@@ -74,7 +74,6 @@ public class HomePresenter implements HomeContract.Presenter {
           Log.d("HomePresenter", "User NOT LOGGED IN");
         } else {
 
-          // TODO: Load User Messages
           model.getCurrentUser(new RepositoryInterface.GetCurrentUser() {
             @Override
             public void onGetCurrentUser(RegisteredUser user) {

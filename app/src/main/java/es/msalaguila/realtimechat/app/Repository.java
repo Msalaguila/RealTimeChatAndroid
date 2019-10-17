@@ -48,7 +48,7 @@ public class Repository implements RepositoryInterface {
   private DatabaseReference refInsideChat = FirebaseDatabase.getInstance().getReference().child("user-messages");
   private DatabaseReference refMessagesInsideChat = FirebaseDatabase.getInstance().getReference().child("messages");
 
-  private String currentUserInAppID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+  private String currentUserInAppID = "";
 
   private ChildEventListener listenerInsideChat;
   private ValueEventListener messageListenerInsideChat;
@@ -145,6 +145,7 @@ public class Repository implements RepositoryInterface {
 
     if (mAuth.getCurrentUser() != null) {
       // User is logged in
+      currentUserInAppID = FirebaseAuth.getInstance().getCurrentUser().getUid();
       callback.onUserIsLoggedIn(true);
     } else {
       callback.onUserIsLoggedIn(false);
