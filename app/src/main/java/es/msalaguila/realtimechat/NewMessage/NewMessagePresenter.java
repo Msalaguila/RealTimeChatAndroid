@@ -63,9 +63,7 @@ public class NewMessagePresenter implements NewMessageContract.Presenter {
 
   @Override
   public void onBackButtonPressed() {
-    Activity activity = view.get().getActivity();
     view.get().finishActivity();
-    router.routeToHome(activity);
   }
 
   @Override
