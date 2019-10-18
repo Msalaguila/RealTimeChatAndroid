@@ -65,8 +65,7 @@ public class ChatPresenter implements ChatContract.Presenter {
     if (state != null) {
       viewModel.userTapped = state.tappedUser;
     }
-
-    // TODO: Now Testing only
+    
     view.get().displayUserTappedName(viewModel);
   }
 

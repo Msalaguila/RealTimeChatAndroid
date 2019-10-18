@@ -41,6 +41,8 @@ interface HomeContract {
     void newMessageButtonPressed();
 
     void userTapped(RegisteredUser userTapped);
+
+    void saveCurrentNotificationState(boolean onScreen);
   }
 
   interface Model {

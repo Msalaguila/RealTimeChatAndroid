@@ -1,8 +1,11 @@
 package es.msalaguila.realtimechat.Home;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
@@ -21,8 +24,12 @@ import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 
+import java.util.List;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 import es.msalaguila.realtimechat.Data.HomeMessage;
+import es.msalaguila.realtimechat.Data.HomeWatcher;
+import es.msalaguila.realtimechat.Data.OnHomePressedListener;
 import es.msalaguila.realtimechat.Data.RegisteredUser;
 import es.msalaguila.realtimechat.R;
 
@@ -63,6 +70,10 @@ public class HomeActivity
     newMessageButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
+        // onScreen = false;
+
+        Log.d("ON", "ON NEW MESSAGE: " + onScreen);
+
         presenter.newMessageButtonPressed();
       }
     });
@@ -70,6 +81,10 @@ public class HomeActivity
     homeAdapter = new HomeAdapter(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
+
+        // onScreen = false;
+
+        Log.d("ON", "ON CELL: " + onScreen);
 
         HomeMessage userTapped = (HomeMessage) view.getTag();
         String name = userTapped.getProfileName();
@@ -85,14 +100,45 @@ public class HomeActivity
     homeRecyclerView.setAdapter(homeAdapter);
   }
 
+  private boolean onScreen;
+  private boolean comingFromOutside;
+
   @Override
   protected void onResume() {
+    onScreen = true;
+    comingFromOutside = true;
+
     super.onResume();
 
     // do some work
+    presenter.saveCurrentNotificationState(onScreen);
     presenter.fetchData();
-
     presenter.isUserLoggedIn();
+
+    Log.d("ON", "ON RESUME: " + onScreen);
+  }
+
+  @Override
+  protected void onPause() {
+    if (isApplicationSentToBackground(this)) {
+      onScreen = false;
+      comingFromOutside = false;
+      Log.d("ON","HOME BUTTON PRESSED: " + onScreen);
+      presenter.saveCurrentNotificationState(onScreen);
+    }
+
+    super.onPause();
+  }
+
+  @Override
+  public void onBackPressed() {
+    onScreen = false;
+    comingFromOutside = false;
+    presenter.saveCurrentNotificationState(onScreen);
+
+    super.onBackPressed();
+
+    Log.d("ON", "ON BACK PRESSED: " + onScreen);
   }
 
   private String CHANNEL_ID = "1";
@@ -125,6 +171,7 @@ public class HomeActivity
 
   @Override
   public void displayCurrentUser(HomeViewModel viewModel) {
+    onScreen = true;
     String userName = viewModel.registeredUser.getName();
     String profileImageURL = viewModel.registeredUser.getProfileImageUrl();
 
@@ -137,12 +184,21 @@ public class HomeActivity
     runOnUiThread(new Runnable() {
       @Override
       public void run() {
-
         homeAdapter.setMessages(viewModel.homeMessageList);
         HomeMessage lastMessage = viewModel.homeMessageList.get(0);
-        showNotification(lastMessage);
+
+        // checkVariable();
+
+        boolean screenState = viewModel.onScreen;
+        showNotification(lastMessage, screenState);
       }
     });
+  }
+
+  private void checkVariable() {
+    if (!comingFromOutside && !onScreen) {
+      onScreen = true;
+    }
   }
 
   private void loadImageFromURL(ImageView imageView, String imageUrl){
@@ -154,25 +210,31 @@ public class HomeActivity
     reqBuilder.into(imageView);
   }
 
-  private void showNotification(HomeMessage lastMessage) {
-    long[] pattern = {500,500,500};
+  private void showNotification(HomeMessage lastMessage, boolean screenState) {
+    Log.d("OND", "DISPLAY MESSAGES: " + onScreen);
 
-    NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
-            .setSmallIcon(R.drawable.user_logo)
-            .setContentTitle("My notification")
-            .setContentText(lastMessage.getMessage())
-            .setStyle(new NotificationCompat.BigTextStyle()
-                    .bigText(lastMessage.getMessage()))
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .setVisibility(1)
-            .setVibrate(pattern);
+    if (!screenState) {
+      long[] pattern = {500,500,500};
 
-    createNotificationChannel();
+      NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+              .setSmallIcon(R.drawable.user_logo)
+              .setContentTitle("My notification")
+              .setContentText(lastMessage.getMessage())
+              .setStyle(new NotificationCompat.BigTextStyle()
+                      .bigText(lastMessage.getMessage()))
+              .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+              .setVisibility(1)
+              .setVibrate(pattern);
 
-    NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+      createNotificationChannel();
+
+      NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
 
 // notificationId is a unique int for each notification that you must define
-    notificationManager.notify(notificationId, builder.build());
+      notificationManager.notify(notificationId, builder.build());
+    }
+
+
   }
 
   private void createNotificationChannel() {
@@ -189,6 +251,18 @@ public class HomeActivity
       NotificationManager notificationManager = getSystemService(NotificationManager.class);
       notificationManager.createNotificationChannel(channel);
     }
+  }
+
+  public boolean isApplicationSentToBackground(final Context context) {
+    ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+    List<ActivityManager.RunningTaskInfo> tasks = am.getRunningTasks(1);
+    if (!tasks.isEmpty()) {
+      ComponentName topActivity = tasks.get(0).topActivity;
+      if (!topActivity.getPackageName().equals(context.getPackageName())) {
+        return true;
+      }
+    }
+    return false;
   }
 
 }

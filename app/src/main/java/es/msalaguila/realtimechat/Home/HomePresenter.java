@@ -122,5 +122,10 @@ public class HomePresenter implements HomeContract.Presenter {
     router.passDataToChat(state);
   }
 
+  @Override
+  public void saveCurrentNotificationState(boolean onScreen) {
+    viewModel.onScreen = onScreen;
+  }
+
 
 }

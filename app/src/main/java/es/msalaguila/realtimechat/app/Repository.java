@@ -534,6 +534,10 @@ public class Repository implements RepositoryInterface {
   public void loadHomeMessages(final LoadHomeMessages callback) {
     // homeMessages.clear();
 
+    if (homeMessagesListener != null) {
+      return;
+    }
+
     // 1. Load the Home Messages
     homeMessagesListener = homeMessagesReference.child(currentUserInAppID).addChildEventListener(new ChildEventListener() {
       @Override

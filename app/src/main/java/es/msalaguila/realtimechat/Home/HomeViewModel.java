@@ -12,4 +12,6 @@ public class HomeViewModel {
   public RegisteredUser registeredUser;
 
   public List<HomeMessage> homeMessageList;
+
+  public boolean onScreen;
 }

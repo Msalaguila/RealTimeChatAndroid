@@ -31,8 +31,6 @@ public class ChatActivity
   private EditText inputEditText;
   private Button sendButton;
 
-  //TODO: Remove chatReference from Firebase when getting out of this Activity
-
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -89,6 +87,7 @@ public class ChatActivity
     super.onPause();
 
     presenter.eliminateInsideChatReference();
+    finish();
   }
 
   @Override
@@ -134,4 +133,5 @@ public class ChatActivity
       return false;
     }
   }
+
 }
