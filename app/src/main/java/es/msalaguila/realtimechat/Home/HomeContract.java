@@ -40,8 +40,6 @@ interface HomeContract {
 
     void injectRouter(Router router);
 
-    void fetchData();
-
     /**
      * Checks if the user is currently logged-in
      */
@@ -73,7 +71,6 @@ interface HomeContract {
   }
 
   interface Model {
-    String fetchData();
 
     /**
      * Method that checks when the application is launched whether the user was logged in or not
@@ -104,10 +101,6 @@ interface HomeContract {
   }
 
   interface Router {
-    void navigateToNextScreen();
-
-    void passDataToNextScreen(HomeState state);
-
     HomeState getDataFromPreviousScreen();
 
     void routeToRegister(Activity activity);

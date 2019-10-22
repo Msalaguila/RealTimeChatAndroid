@@ -20,12 +20,6 @@ public class HomeModel implements HomeContract.Model {
   }
 
   @Override
-  public String fetchData() {
-    // Log.e(TAG, "fetchData()");
-    return "Hello";
-  }
-
-  @Override
   public void isUserLoggedIn(final RepositoryInterface.CheckIfUserIsLoggedIn callback) {
     repository.isUserLoggedIn(callback);
   }

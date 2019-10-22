@@ -112,7 +112,6 @@ public class HomeActivity
 
     // do some work
     presenter.saveCurrentNotificationState(onScreen);
-    presenter.fetchData();
     presenter.isUserLoggedIn();
 
     Log.d("ON", "ON RESUME: " + onScreen);
@@ -187,18 +186,10 @@ public class HomeActivity
         homeAdapter.setMessages(viewModel.homeMessageList);
         HomeMessage lastMessage = viewModel.homeMessageList.get(0);
 
-        // checkVariable();
-
         boolean screenState = viewModel.onScreen;
         showNotification(lastMessage, screenState);
       }
     });
-  }
-
-  private void checkVariable() {
-    if (!comingFromOutside && !onScreen) {
-      onScreen = true;
-    }
   }
 
   private void loadImageFromURL(ImageView imageView, String imageUrl){
@@ -230,7 +221,6 @@ public class HomeActivity
 
       NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
 
-// notificationId is a unique int for each notification that you must define
       notificationManager.notify(notificationId, builder.build());
     }
 
