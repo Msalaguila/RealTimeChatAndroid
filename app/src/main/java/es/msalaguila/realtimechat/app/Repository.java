@@ -479,6 +479,7 @@ public class Repository implements RepositoryInterface {
                   storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri userImageUri) {
+
                       String userUID = FirebaseAuth.getInstance().getUid();
 
                       Log.d("Repository", "ImageURL: " + userImageUri.toString());
