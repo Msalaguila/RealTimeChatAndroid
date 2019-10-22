@@ -55,21 +55,12 @@ public class NewMessageActivity
     super.onResume();
 
     // do some work
-    presenter.fetchData();
     presenter.getCurrentUsers();
   }
 
   @Override
   public void injectPresenter(NewMessageContract.Presenter presenter) {
     this.presenter = presenter;
-  }
-
-  @Override
-  public void displayData(NewMessageViewModel viewModel) {
-    //Log.e(TAG, "displayData()");
-
-    // deal with the data
-    // ((TextView) findViewById(R.id.data)).setText(viewModel.data);
   }
 
   @Override

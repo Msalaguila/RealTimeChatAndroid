@@ -21,28 +21,9 @@ public class NewMessageRouter implements NewMessageContract.Router {
   }
 
   @Override
-  public void navigateToNextScreen() {
-    Context context = mediator.getApplicationContext();
-    Intent intent = new Intent(context, NewMessageActivity.class);
-    context.startActivity(intent);
-  }
-
-  @Override
-  public void passDataToNextScreen(NewMessageState state) {
-    mediator.setNewMessageState(state);
-  }
-
-  @Override
   public NewMessageState getDataFromPreviousScreen() {
     NewMessageState state = mediator.getNewMessageState();
     return state;
-  }
-
-  @Override
-  public void routeToHome(Activity activity) {
-    Context context = mediator.getApplicationContext();
-    Intent intent = new Intent(context, HomeActivity.class);
-    context.startActivity(intent);
   }
 
   @Override

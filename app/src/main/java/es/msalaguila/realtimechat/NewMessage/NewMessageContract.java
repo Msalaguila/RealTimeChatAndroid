@@ -13,8 +13,6 @@ interface NewMessageContract {
   interface View {
     void injectPresenter(Presenter presenter);
 
-    void displayData(NewMessageViewModel viewModel);
-
     Activity getActivity();
 
     void finishActivity();
@@ -32,8 +30,6 @@ interface NewMessageContract {
     void injectModel(Model model);
 
     void injectRouter(Router router);
-
-    void fetchData();
 
     /**
      * Gets called when the back button is pressed
@@ -53,8 +49,6 @@ interface NewMessageContract {
   }
 
   interface Model {
-    String fetchData();
-
     /**
      * Method that gets called when the user taps on "New Message" Button and retrieves the
      * different registered users in the application
@@ -65,13 +59,7 @@ interface NewMessageContract {
   }
 
   interface Router {
-    void navigateToNextScreen();
-
-    void passDataToNextScreen(NewMessageState state);
-
     NewMessageState getDataFromPreviousScreen();
-
-    void routeToHome(Activity activity);
 
     void routeToChat(Activity activity);
 
