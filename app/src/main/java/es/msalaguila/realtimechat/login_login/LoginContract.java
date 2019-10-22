@@ -23,7 +23,7 @@ interface LoginContract {
     void displayPasswordTooShort();
 
     /**
-     * Gets called while the log-in was being executed
+     * Gets called while the log-in was being executed and an error happens
      */
     void displayLoginErrorAlert();
 
