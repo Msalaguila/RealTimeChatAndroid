@@ -13,8 +13,6 @@ interface LoginContract {
   interface View {
     void injectPresenter(Presenter presenter);
 
-    void displayData(LoginViewModel viewModel);
-
     Activity getActivity();
 
     /**
@@ -42,8 +40,6 @@ interface LoginContract {
 
     void injectRouter(Router router);
 
-    void fetchData();
-
     /**
      * Gets called when the user taps on the Register Button
      * @param activity: Context
@@ -58,8 +54,6 @@ interface LoginContract {
   }
 
   interface Model {
-    String fetchData();
-
     /**
      * Method that log-ins a new user previously created to the application
      * @param user: User to be logged-in
@@ -69,10 +63,6 @@ interface LoginContract {
   }
 
   interface Router {
-    void navigateToNextScreen();
-
-    void passDataToNextScreen(LoginState state);
-
     void routeToRegister(Activity activity);
 
     LoginState getDataFromPreviousScreen();

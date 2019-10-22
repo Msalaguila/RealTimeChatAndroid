@@ -20,18 +20,6 @@ public class LoginRouter implements LoginContract.Router {
   }
 
   @Override
-  public void navigateToNextScreen() {
-    Context context = mediator.getApplicationContext();
-    Intent intent = new Intent(context, LoginActivity.class);
-    context.startActivity(intent);
-  }
-
-  @Override
-  public void passDataToNextScreen(LoginState state) {
-    mediator.setLoginState(state);
-  }
-
-  @Override
   public void routeToRegister(Activity activity) {
     Context context = mediator.getApplicationContext();
     Intent intent = new Intent(context, RegisterActivity.class);

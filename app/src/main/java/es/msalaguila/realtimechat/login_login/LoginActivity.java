@@ -82,20 +82,11 @@ public class LoginActivity
     super.onResume();
 
     // do some work
-    presenter.fetchData();
   }
 
   @Override
   public void injectPresenter(LoginContract.Presenter presenter) {
     this.presenter = presenter;
-  }
-
-  @Override
-  public void displayData(LoginViewModel viewModel) {
-    //Log.e(TAG, "displayData()");
-
-    // deal with the data
-
   }
 
   @Override

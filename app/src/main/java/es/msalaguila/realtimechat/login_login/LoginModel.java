@@ -14,12 +14,6 @@ public class LoginModel implements LoginContract.Model {
   }
 
   @Override
-  public String fetchData() {
-    // Log.e(TAG, "fetchData()");
-    return "Hello";
-  }
-
-  @Override
   public void loginUser(LoginUser user, RepositoryInterface.LoginNewUser callback) {
     repository.logInUser(user, callback);
   }
