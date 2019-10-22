@@ -19,6 +19,10 @@ interface NewMessageContract {
 
     void finishActivity();
 
+    /**
+     * Displays the current in-app users when are retrieved from the database
+     * @param viewModel: Contains the data to be displayed
+     */
     void displayCurrentUsers(NewMessageViewModel viewModel);
   }
 
@@ -31,16 +35,32 @@ interface NewMessageContract {
 
     void fetchData();
 
+    /**
+     * Gets called when the back button is pressed
+     */
     void onBackButtonPressed();
 
+    /**
+     * Calls the model to retrieve the current in-app users from the database
+     */
     void getCurrentUsers();
 
+    /**
+     * Calls the model with the tapped user so its information is obtained in the next screen
+     * @param userTapped: User that has been tapped
+     */
     void userTapped(RegisteredUser userTapped);
   }
 
   interface Model {
     String fetchData();
 
+    /**
+     * Method that gets called when the user taps on "New Message" Button and retrieves the
+     * different registered users in the application
+     * @param callback: Callback that is going to be called when the users are retrieved from the
+     *                database
+     */
     void getCurrentUsers(RepositoryInterface.GetCurrentUsers callback);
   }
 
