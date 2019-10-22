@@ -17,18 +17,6 @@ public class ChatRouter implements ChatContract.Router {
   }
 
   @Override
-  public void navigateToNextScreen() {
-    Context context = mediator.getApplicationContext();
-    Intent intent = new Intent(context, ChatActivity.class);
-    context.startActivity(intent);
-  }
-
-  @Override
-  public void passDataToNextScreen(ChatState state) {
-    mediator.setChatState(state);
-  }
-
-  @Override
   public ChatState getDataFromPreviousScreen() {
     ChatState state = mediator.getChatState();
     return state;

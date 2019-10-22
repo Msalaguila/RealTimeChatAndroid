@@ -58,8 +58,6 @@ interface ChatContract {
   }
 
   interface Model {
-    String fetchData();
-
     /**
      * Method used when a message is going to be sent to a user
      * @param textToSend: Text that is going to be sent
@@ -87,10 +85,6 @@ interface ChatContract {
   }
 
   interface Router {
-    void navigateToNextScreen();
-
-    void passDataToNextScreen(ChatState state);
-
     ChatState getDataFromPreviousScreen();
   }
 }
