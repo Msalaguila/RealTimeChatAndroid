@@ -22,18 +22,6 @@ public class RegisterRouter implements RegisterContract.Router {
   }
 
   @Override
-  public void navigateToNextScreen() {
-    Context context = mediator.getApplicationContext();
-    Intent intent = new Intent(context, RegisterActivity.class);
-    context.startActivity(intent);
-  }
-
-  @Override
-  public void passDataToNextScreen(RegisterState state) {
-    mediator.setRegisterState(state);
-  }
-
-  @Override
   public void navigateToLogin(Activity activity) {
     Context context = mediator.getApplicationContext();
     Intent intent = new Intent(context, LoginActivity.class);

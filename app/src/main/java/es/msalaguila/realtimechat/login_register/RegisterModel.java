@@ -17,12 +17,6 @@ public class RegisterModel implements RegisterContract.Model {
   }
 
   @Override
-  public String fetchData() {
-    // Log.e(TAG, "fetchData()");
-    return "Hello";
-  }
-
-  @Override
   public void registerNewUser(RegisteredUser user, RepositoryInterface.RegisterNewUser callback) {
     repository.registerNewUser(user, callback);
   }

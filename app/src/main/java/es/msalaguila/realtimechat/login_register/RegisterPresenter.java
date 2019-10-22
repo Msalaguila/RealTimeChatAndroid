@@ -42,29 +42,6 @@ public class RegisterPresenter implements RegisterContract.Presenter {
   }
 
   @Override
-  public void fetchData() {
-    // Log.e(TAG, "fetchData()");
-
-    // set passed state
-    RegisterState state = router.getDataFromPreviousScreen();
-    if (state != null) {
-      viewModel.data = state.data;
-    }
-
-    if (viewModel.data == null) {
-      // call the model
-      String data = model.fetchData();
-
-      // set initial state
-      viewModel.data = data;
-    }
-
-    // update the view
-    view.get().displayData(viewModel);
-
-  }
-
-  @Override
   public void openGallery(Activity activity) {
     router.openGallery(activity);
   }

@@ -94,21 +94,11 @@ public class RegisterActivity
   @Override
   protected void onResume() {
     super.onResume();
-
-    // do some work
-    presenter.fetchData();
   }
 
   @Override
   public void injectPresenter(RegisterContract.Presenter presenter) {
     this.presenter = presenter;
-  }
-
-  @Override
-  public void displayData(RegisterViewModel viewModel) {
-    //Log.e(TAG, "displayData()");
-
-    // deal with the data
   }
 
   private void startProgressBar() {

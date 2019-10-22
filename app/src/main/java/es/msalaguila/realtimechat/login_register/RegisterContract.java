@@ -13,8 +13,6 @@ interface RegisterContract {
   interface View {
     void injectPresenter(Presenter presenter);
 
-    void displayData(RegisterViewModel viewModel);
-
     Activity getActivity();
 
     /**
@@ -52,8 +50,6 @@ interface RegisterContract {
 
     void routeToLogin(Activity activity);
 
-    void fetchData();
-
     /**
      * Opens the phone's gallery
      * @param activity: Context
@@ -73,8 +69,6 @@ interface RegisterContract {
   }
 
   interface Model {
-    String fetchData();
-
     /**
      * Method that register a new user
      * @param user: User that is being registered
@@ -84,10 +78,6 @@ interface RegisterContract {
   }
 
   interface Router {
-    void navigateToNextScreen();
-
-    void passDataToNextScreen(RegisterState state);
-
     void navigateToLogin(Activity activity);
 
     RegisterState getDataFromPreviousScreen();
