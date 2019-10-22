@@ -78,7 +78,6 @@ public class ChatActivity
     super.onResume();
 
     // do some work
-    presenter.fetchData();
     presenter.getUserTappedFromPreviousScreen();
   }
 
@@ -93,14 +92,6 @@ public class ChatActivity
   @Override
   public void injectPresenter(ChatContract.Presenter presenter) {
     this.presenter = presenter;
-  }
-
-  @Override
-  public void displayData(ChatViewModel viewModel) {
-    //Log.e(TAG, "displayData()");
-
-    // deal with the data
-    // ((TextView) findViewById(R.id.data)).setText(viewModel.data);
   }
 
   @Override
